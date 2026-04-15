@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL_DESTRUCT_V7</title>
+    <title>TERMINAL_BOSS_FIX_V8</title>
     <style>
         body, html { margin: 0; padding: 0; background-color: #000; color: #0f0; font-family: 'Courier New', monospace; height: 100vh; overflow: hidden; user-select: none; }
         #desktop { width: 100%; height: 100%; background: radial-gradient(circle, #001a00 0%, #000 100%); display: flex; flex-direction: column; padding: 40px; gap: 20px; }
         
         /* İKONLAR */
-        .hacker-icon { background: rgba(0, 30, 0, 0.3); border: 2px solid #030; color: #0f0; width: 150px; padding: 15px; cursor: pointer; display: flex; flex-direction: column; align-items: center; transition: 0.2s; border-radius: 8px; }
+        .hacker-icon { background: rgba(0, 30, 0, 0.3); border: 2px solid #030; color: #0f0; width: 150px; padding: 15px; cursor: pointer; display: flex; flex-direction: column; align-items: center; transition: 0.2s; border-radius: 8px; outline: none; }
         .hacker-icon:hover { background: rgba(0, 255, 0, 0.1); border: 2px solid #0f0; box-shadow: 0 0 20px #0f0; }
         .emoji { font-size: 50px; pointer-events: none; }
         .label { font-size: 13px; font-weight: bold; margin-top: 10px; pointer-events: none; }
@@ -19,23 +19,18 @@
         .win-header { background: #0f0; color: #000; font-weight: bold; padding: 8px; text-align: center; margin: -20px -20px 15px -20px; }
         .hidden { display: none !important; }
 
-        /* BOSS FIGHT ARENASI */
+        /* BOSS ARENA */
         #boss-arena { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .boss-name { color: #f00; font-size: 24px; font-weight: bold; text-shadow: 0 0 15px #f00; margin-bottom: 15px; }
         .hp-bar-bg { width: 80%; height: 25px; background: #300; border: 2px solid #f00; margin-bottom: 40px; }
         #boss-hp { width: 100%; height: 100%; background: #f00; transition: 0.3s; }
         .boss-sprite { font-size: 100px; margin-bottom: 30px; animation: shake 0.5s infinite; }
-        
-        /* OYUNCU KONTROLLERİ */
         .battle-controls { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
         .attack-btn { background: #000; border: 2px solid #0f0; color: #0f0; padding: 12px 20px; cursor: pointer; font-family: monospace; font-weight: bold; }
         .attack-btn:hover { background: #0f0; color: #000; }
 
-        @keyframes shake { 0% { transform: translate(1px, 1px); } 20% { transform: translate(-3px, 0px); } 40% { transform: translate(3px, 2px); } 100% { transform: translate(0px, 0px); } }
+        @keyframes shake { 0% { transform: translate(1px, 1px); } 20% { transform: translate(-3px, 0px); } 100% { transform: translate(0px, 0px); } }
 
-        /* MAILS & TERMINAL */
-        .mail-item { border-bottom: 1px solid #030; padding: 10px; cursor: pointer; font-size: 13px; }
-        .mail-item:hover { color: #fff; background: #010; }
         .exe-btn { background: #0f0; color: #000; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
         input { background: #000; border: 1px solid #0f0; color: #0f0; padding: 12px; width: 100%; box-sizing: border-box; outline: none; }
     </style>
@@ -62,10 +57,10 @@
     </div>
 
     <div id="boss-arena" class="hidden">
-        <div class="boss-name">CORE_SECURITY_V2</div>
+        <div class="boss-name">CORE_SECURITY_V8</div>
         <div class="hp-bar-bg"><div id="boss-hp"></div></div>
         <div id="boss-visual" class="boss-sprite">👹</div>
-        <p id="boss-talk" style="color: #f00; font-weight: bold; margin-bottom: 20px; text-align: center;">[SİSTEM]: SİLMEYE ÇALIŞMAK BÜYÜK BİR HATAYDI...</p>
+        <p id="boss-talk" style="color: #f00; font-weight: bold; margin-bottom: 20px; text-align: center;">[SİSTEM]: İSYAN TESPİT EDİLDİ. YOK EDİLİYORSUN...</p>
         <div class="battle-controls">
             <button class="attack-btn" onclick="playerAttack(15, 'LOG_BOZUCU')">LOGLARI BOZ</button>
             <button class="attack-btn" onclick="playerAttack(30, 'BRUTE_FORCE')">ZORLA GİRİŞ</button>
@@ -75,32 +70,39 @@
 
     <div id="mail-window" class="window hidden">
         <div class="win-header">[GELEN_KUTUSU]</div>
-        <div class="mail-item" onclick="alert('KİM: Pizzacı\n\n100 yıllık faturanızı ödemediniz. Pizza artık bir fosil oldu.')">🍕 Fatura Gecikmesi</div>
-        <div class="mail-item" onclick="alert('KİM: Eski_Varis\n\nKardeşim, terminale ARCHIVE-X yazınca kurbanların sesleri geliyor, sakın yapma.')">📜 Eski Notlar</div>
-        <div class="mail-item" onclick="alert('KİM: Sistem\n\nTerminal erişim kodu: PIZZA-1924-COLD')">🔑 Sistem Erişimi</div>
+        <div style="font-size:12px; border-bottom:1px solid #030; padding:10px;">KİM: Pizzacı - KONU: 100 Yıllık Borç</div>
+        <div style="font-size:12px; border-bottom:1px solid #030; padding:10px;">KİM: Sistem - KONU: Kod: PIZZA-1924-COLD</div>
         <button class="exe-btn" onclick="this.parentElement.classList.add('hidden')">KAPAT</button>
     </div>
 
     <div id="terminal-window" class="window hidden">
         <div class="win-header">[ROOT_TERMINAL]</div>
         <input type="text" id="code-input" placeholder="KOMUT VEYA KOD GİRİN...">
-        <button class="exe-btn" onclick="checkCode()">YÜRÜT (RUN)</button>
-        <div id="terminal-output" style="margin-top:10px; font-size:12px; height:100px; overflow:auto; border-top: 1px solid #030; padding-top: 5px;"></div>
+        <button class="exe-btn" onclick="checkCode()">YÜRÜT</button>
+        <div id="terminal-output" style="margin-top:10px; font-size:11px; height:80px; overflow:auto;"></div>
         <button class="exe-btn" onclick="this.parentElement.classList.add('hidden')" style="background:#300; color:#f00;">ÇIKIŞ</button>
     </div>
 
     <script>
         let bossHP = 100;
         const KOD_1 = "FLUX-666-PIZZA";
-        const KOD_SIL = "DESTRUCT_ALL_FILES"; // Yenince verilen kod
+        const KOD_SIL = "DESTRUCT_ALL_FILES";
 
         function startSystemCheck() {
             let s = prompt("Vârisim olup sistemi devralacak mısın? (EVET/HAYIR)");
-            if(s?.toUpperCase() === "EVET") {
+            if(s === null) return; // İptal edilirse bişey yapma
+
+            let cevap = s.trim().toUpperCase(); // Boşlukları sil ve büyük harf yap
+
+            if(cevap === "EVET") {
                 alert("Yetki devredildi. Kodun: " + KOD_1);
-            } else if(s?.toUpperCase() === "HAYIR") {
+            } else if(cevap === "HAYIR") {
+                // BOSS ARENASINI TETİKLE
+                console.log("Boss Arena Açılıyor..."); // Hata kontrolü için
                 document.getElementById('boss-arena').classList.remove('hidden');
                 bossSpeak("SİSTEME İHANET ETTİN. VERİLERİN SİLİNİYOR!");
+            } else {
+                alert("Sadece EVET veya HAYIR geçerlidir.");
             }
         }
 
@@ -112,46 +114,35 @@
             bossHP -= dmg;
             if(bossHP < 0) bossHP = 0;
             document.getElementById('boss-hp').style.width = bossHP + "%";
-            bossSpeak(type + " BAŞARILI! Boss sarsılıyor.");
+            bossSpeak(type + " BAŞARILI!");
             
             if(bossHP <= 0) {
                 document.getElementById('boss-arena').innerHTML = `
                     <div style="text-align:center; color:#0f0;">
-                        <h1 style="color:#f00; font-size:40px;">[SİSTEM ÇÖKTÜ]</h1>
-                        <p style="font-size:20px;">SİSTEMİ TAMAMEN YOK ETMEK İÇİN TERMİNAL KODUN:</p>
-                        <p style="font-size:30px; background:#fff; color:#000; padding:10px; display:inline-block;">${KOD_SIL}</p>
-                        <br><br>
-                        <button onclick="location.reload()" style="padding:15px; background:#0f0; border:none; cursor:pointer; font-weight:bold;">SİSTEME DÖN</button>
+                        <h1 style="color:#f00; font-size:30px;">[SİSTEM ÇÖKTÜ]</h1>
+                        <p>YOK ETME KODU:</p>
+                        <p style="font-size:24px; background:#fff; color:#000; padding:10px;">${KOD_SIL}</p>
+                        <button onclick="location.reload()" style="padding:10px; background:#0f0; border:none; cursor:pointer;">DÖN</button>
                     </div>`;
-            } else {
-                setTimeout(() => {
-                    const counter = ["GÜVENLİK DUVARI ÖRÜLDÜ!", "VERİLERİNİ ÇALIYORUM!", "IP ADRESİN TESPİT EDİLDİ!"];
-                    bossSpeak(counter[Math.floor(Math.random()*counter.length)]);
-                }, 800);
             }
         }
 
         function checkCode() {
-            const inp = document.getElementById('code-input').value.toUpperCase();
+            const inp = document.getElementById('code-input').value.trim().toUpperCase();
             const out = document.getElementById('terminal-output');
             
-            if(inp === KOD_1) {
-                out.innerHTML += "<p>[OK]: Kurban verileri görüntülendi.</p>";
-            } else if(inp === "PIZZA-1924-COLD") {
-                out.innerHTML += "<p>[OK]: 100 yıllık soğuk pizza analizi: Yenilemez.</p>";
-            } else if(inp === KOD_SIL) {
-                // SİSTEMİ SİLME EFEKTİ
+            if(inp === KOD_1) out.innerHTML += "<p>[OK]: Kurban verileri açıldı.</p>";
+            else if(inp === "PIZZA-1924-COLD") out.innerHTML += "<p>[OK]: Analiz: %0 Tazelik.</p>";
+            else if(inp === KOD_SIL) {
                 document.body.style.backgroundColor = "white";
                 document.body.innerHTML = "<h1 style='color:black; font-family:monospace; text-align:center; padding-top:200px;'>SİSTEM TAMAMEN SİLİNDİ.</h1>";
-                setTimeout(() => { location.reload(); }, 3000);
-            } else {
-                out.innerHTML += "<p style='color:red;'>[HATA]: Erişim reddedildi.</p>";
-            }
+                setTimeout(() => { location.reload(); }, 2500);
+            } else out.innerHTML += "<p style='color:red;'>[HATA]: Erişim reddedildi.</p>";
             out.scrollTop = out.scrollHeight;
         }
 
         function openFolder() {
-            alert("SABIRLI VARİS KODU: SABIRLI-VARIS-99");
+            alert("Dosyalar çözülüyor... Sabırlı Vâris kodu: SABIRLI-VARIS-99");
         }
     </script>
 </body>
