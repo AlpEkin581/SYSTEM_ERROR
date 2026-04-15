@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SİSTEM HATASI - ROOT</title>
+    <style>
+        /* CSS BURADA - DIŞ DOSYAYA GEREK KALMADI */
+        body, html {
+            margin: 0; padding: 0;
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        #desktop {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #002200 0%, #000000 100%);
+            display: flex;
+            flex-direction: column;
+            padding: 40px;
+            box-sizing: border-box;
+            gap: 30px;
+        }
+
+        /* DEV İKON BUTONLARI */
+        .main-button {
+            background: rgba(0, 50, 0, 0.4);
+            border: 3px solid #0f0;
+            color: #0f0;
+            width: 180px; /* DEVASALIK BURADA */
+            padding: 25px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .main-button:hover {
+            background: #0f0;
+            color: #000;
+            box-shadow: 0 0 30px #0f0;
+            transform: scale(1.05);
+        }
+
+        .main-button:active { transform: scale(0.95); }
+
+        .emoji { font-size: 70px; pointer-events: none; }
+        .label { font-size: 16px; font-weight: bold; margin-top: 15px; pointer-events: none; }
+
+        /* PENCERELER */
+        .window {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #000;
+            border: 4px solid #0f0;
+            padding: 25px;
+            z-index: 9999;
+            min-width: 350px;
+            box-shadow: 0 0 50px rgba(0, 255, 0, 0.5);
+            text-align: center;
+        }
+
+        .win-header {
+            background: #0f0;
+            color: #000;
+            font-weight: bold;
+            padding: 10px;
+            margin: -25px -25px 20px -25px;
+        }
+
+        input {
+            background: #000; border: 2px solid #0f0;
+            color: #0f0; padding: 15px; width: 100%;
+            box-sizing: border-box; margin-bottom: 20px;
+            font-size: 18px; outline: none;
+        }
+
+        .action-btn {
+            background: #0f0; color: #000;
+            border: none; padding: 15px; width: 100%;
+            font-weight: bold; cursor: pointer; font-size: 16px;
+        }
+
+        .progress-container { width: 100%; height: 25px; background: #001100; border: 2px solid #0f0; }
+        #bar { width: 0%; height: 100%; background: #0f0; transition: width 0.3s; }
+
+        .hidden { display: none !important; }
+        .close-txt { color: #f00; cursor: pointer; margin-top: 15px; display: block; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <div id="desktop">
+        <button class="main-button" onclick="openFolder()">
+            <span class="emoji">📁</span>
+            <span class="label">NOTLAR.TXT</span>
+        </button>
+
+        <button class="main-button" onclick="openTerminal()">
+            <span class="emoji">📟</span>
+            <span class="label">TERMİNAL</span>
+        </button>
+
+        <button class="main-button" onclick="startFinal()">
+            <span class="emoji">⚠️</span>
+            <span class="label">SİSTEM.EXE</span>
+        </button>
+    </div>
+
+    <div id="msg-box" class="window hidden">
+        <div class="win-header">[MESAJ]</div>
+        <p id="msg-text" style="font-size: 18px;"></p>
+        <button class="action-btn" onclick="closeBox('msg-box')">ANLADIM</button>
+    </div>
+
+    <div id="loading-box" class="window hidden">
+        <div class="win-header">[VERİ ÇÖZÜLÜYOR]</div>
+        <div class="progress-container"><div id="bar"></div></div>
+    </div>
+
+    <div id="terminal-window" class="window hidden">
+        <div class="win-header">[TERMİNAL GİRİŞİ]</div>
+        <input type="text" id="code-input" placeholder="KODU GİRİNİZ...">
+        <button class="action-btn" onclick="checkCode()">ONAYLA</button>
+        <div id="output" style="margin-top: 15px; font-weight: bold;"></div>
+        <span class="close-txt" onclick="closeBox('terminal-window')">[PENCEREYİ KAPAT]</span>
+    </div>
+
+    <script>
+        /* JAVASCRIPT BURADA */
+        const KOD_1 = "FLUX-666-PIZZA";
+        const KOD_2 = "SABIRLI-VARIS-99";
+        let timer;
+
+        function openBox(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeBox(id) { document.getElementById(id).classList.add('hidden'); }
+
+        function openFolder() {
+            document.getElementById('msg-text').innerText = "SİSTEM TARANIYOR... BEKLEYİN.";
+            openBox('msg-box');
+            
+            const bar = document.getElementById('bar');
+            openBox('loading-box');
+            
+            let w = 0;
+            clearInterval(timer);
+            timer = setInterval(() => {
+                w += 2;
+                bar.style.width = w + "%";
+                if(w >= 100) {
+                    clearInterval(timer);
+                    document.getElementById('msg-text').innerText = "GİZLİ KOD: " + KOD_2;
+                    closeBox('loading-box');
+                }
+            }, 600); // Yaklaşık 30 saniye
+        }
+
+        function openTerminal() { openBox('terminal-window'); }
+
+        function startFinal() {
+            let s = prompt("Vârisim olacak mısın? (EVET/HAYIR)");
+            if(s?.toUpperCase() === "EVET") {
+                document.body.innerHTML = `
+                    <div style="background:#000; color:#0f0; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+                        <h1 style="font-size:60px; margin:0;">[YÖNETİCİ ONAYLANDI]</h1>
+                        <p style="font-size:30px;">KODUN: ${KOD_1}</p>
+                        <button onclick="location.reload()" style="background:#0f0; border:none; padding:20px; cursor:pointer; font-weight:bold; font-size:20px; margin-top:30px;">SİSTEME GERİ DÖN</button>
+                    </div>`;
+            }
+        }
+
+        function checkCode() {
+            const inp = document.getElementById('code-input').value;
+            const out = document.getElementById('output');
+            if(inp === KOD_1) out.innerHTML = "<span style='color:yellow;'>[LOG]: Pizza faturası bulundu.</span>";
+            else if(inp === KOD_2) out.innerHTML = "<span style='color:cyan;'>[LOG]: Sabırlı varis ödülü aktif!</span>";
+            else out.innerHTML = "<span style='color:red;'>[HATA]: GEÇERSİZ KOD.</span>";
+        }
+    </script>
+</body>
+</html>
