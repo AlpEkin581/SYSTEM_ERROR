@@ -3,99 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL_TROLL_V12</title>
+    <title>HACKER_TERMINAL_V14_FINAL</title>
     <style>
         body, html { margin: 0; padding: 0; background-color: #000; color: #0f0; font-family: 'Courier New', monospace; height: 100vh; overflow: hidden; user-select: none; }
         
+        /* MASAÜSTÜ GRID - HER SATIRDA 4 UYGULAMA */
         #desktop { 
             width: 100%; height: 100%; 
             background: radial-gradient(circle, #001a00 0%, #000 100%); 
             display: grid; grid-template-columns: repeat(4, 1fr); 
-            padding: 40px; gap: 25px; box-sizing: border-box;
+            grid-auto-rows: min-content; padding: 40px; gap: 25px; box-sizing: border-box;
         }
         
+        /* İKONLAR */
         .hacker-icon { 
-            background: rgba(0, 30, 0, 0.3); border: 2px solid #030; 
-            color: #0f0; padding: 20px; cursor: pointer; 
-            display: flex; flex-direction: column; align-items: center; 
+            background: rgba(0, 30, 0, 0.2); border: 2px solid #030; color: #0f0; padding: 20px; 
+            cursor: pointer; display: flex; flex-direction: column; align-items: center; 
             transition: 0.2s; border-radius: 10px; outline: none; width: 100%;
         }
         .hacker-icon:hover { background: rgba(0, 255, 0, 0.1); border: 2px solid #0f0; box-shadow: 0 0 20px #0f0; }
         .emoji { font-size: 50px; pointer-events: none; }
         .label { font-size: 13px; font-weight: bold; margin-top: 10px; pointer-events: none; }
 
+        /* PENCERELER */
         .window { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #000; border: 3px solid #0f0; padding: 20px; z-index: 100; width: 450px; box-shadow: 0 0 40px rgba(0, 255, 0, 0.4); box-sizing: border-box; }
         .win-header { background: #0f0; color: #000; font-weight: bold; padding: 8px; text-align: center; margin: -20px -20px 15px -20px; }
         .hidden { display: none !important; }
 
-        /* PİZZACI SEÇENEKLERİ */
-        .pizza-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-        .topping-check { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; }
-        
+        /* PROGRESS BAR (SABIRLI VARİS) */
         .progress-container { width: 100%; height: 25px; background: #001100; border: 1px solid #0f0; margin: 15px 0; overflow: hidden; }
         #bar { width: 0%; height: 100%; background: #0f0; }
 
-        .output-line { border-bottom: 1px solid #020; padding: 10px; font-size: 13px; cursor: pointer; color: #aaa; }
-        .output-line:hover { background: #010; color: #0f0; }
+        /* BOSS ARENA */
+        #boss-arena { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .hp-bar-bg { width: 80%; height: 25px; background: #300; border: 2px solid #f00; margin-bottom: 40px; }
+        #boss-hp { width: 100%; height: 100%; background: #f00; transition: 0.3s; }
+        .attack-btn { background: #000; border: 2px solid #0f0; color: #0f0; padding: 12px 20px; cursor: pointer; font-family: monospace; font-weight: bold; margin: 5px; }
+
+        /* PIZZA TAKİP */
+        #delivery-status { background: #010; border: 1px dashed #0f0; padding: 10px; margin-top: 10px; font-size: 12px; }
+        .century-line { color: yellow; font-weight: bold; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
 
         .exe-btn { background: #0f0; color: #000; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .output-line { border-bottom: 1px solid #020; padding: 10px; font-size: 13px; cursor: pointer; color: #aaa; }
+        .output-line:hover { background: #010; color: #0f0; }
         input { background: #000; border: 1px solid #0f0; color: #0f0; padding: 12px; width: 100%; box-sizing: border-box; outline: none; }
+        input[type="checkbox"] { accent-color: #0f0; margin-right: 10px; }
     </style>
 </head>
 <body>
 
     <div id="desktop">
-        <button class="hacker-icon" onclick="openFolder()">
-            <span class="emoji">📁</span>
-            <span class="label">NOTLAR.TXT</span>
-        </button>
-        <button class="hacker-icon" onclick="document.getElementById('mail-window').classList.remove('hidden')">
-            <span class="emoji">📧</span>
-            <span class="label">E-POSTA</span>
-        </button>
-        <button class="hacker-icon" onclick="document.getElementById('pizza-window').classList.remove('hidden')">
-            <span class="emoji">🍕</span>
-            <span class="label">PİZZACI</span>
-        </button>
-        <button class="hacker-icon" onclick="document.getElementById('terminal-window').classList.remove('hidden')">
-            <span class="emoji">📟</span>
-            <span class="label">TERMİNAL</span>
-        </button>
-        <button class="hacker-icon" onclick="startSystemCheck()">
-            <span class="emoji">⚠️</span>
-            <span class="label">SİSTEM.EXE</span>
-        </button>
-        <button class="hacker-icon" onclick="document.getElementById('antivirus-window').classList.remove('hidden')">
-            <span class="emoji">🛡️</span>
-            <span class="label">ANTİVİRÜS</span>
-        </button>
+        <button class="hacker-icon" onclick="openFolder()"><span class="emoji">📁</span><span class="label">NOTLAR.TXT</span></button>
+        <button class="hacker-icon" onclick="openWin('mail-window')"><span class="emoji">📧</span><span class="label">E-POSTA</span></button>
+        <button class="hacker-icon" onclick="openWin('pizza-window')"><span class="emoji">🍕</span><span class="label">PİZZACI</span></button>
+        <button class="hacker-icon" onclick="openWin('terminal-window')"><span class="emoji">📟</span><span class="label">TERMİNAL</span></button>
+        <button class="hacker-icon" onclick="startSystemCheck()"><span class="emoji">⚠️</span><span class="label">SİSTEM.EXE</span></button>
+        <button class="hacker-icon" onclick="openWin('antivirus-window')"><span class="emoji">🛡️</span><span class="label">ANTİVİRÜS</span></button>
     </div>
 
     <div id="pizza-window" class="window hidden">
-        <div class="win-header">[PİZZA_BUILDER_V2]</div>
-        <div class="pizza-options">
-            <label class="topping-check"><input type="checkbox" class="t-opt" value="Fosil Sucuk"> Fosil Sucuk 🥓</label>
-            <label class="topping-check"><input type="checkbox" class="t-opt" value="Küflü Peynir"> Küflü Peynir 🧀</label>
-            <label class="topping-check"><input type="checkbox" class="t-opt" value="Antik Zeytin"> Antik Zeytin 🫒</label>
-            <label class="topping-check"><input type="checkbox" class="t-opt" value="Ronaldo'nun Terli Forması"> Ronaldo'nun Forması ⚽</label>
+        <div class="win-header">[PIZZA_TIME_TRAVELER]</div>
+        <div id="pizza-order-form">
+            <p style="font-size: 12px;">Malzeme Seçimi:</p>
+            <label><input type="checkbox" class="t-opt" value="Fosil Sucuk"> Fosil Sucuk 🥓</label><br>
+            <label><input type="checkbox" class="t-opt" value="Küflü Peynir"> Küflü Peynir 🧀</label><br>
+            <label><input type="checkbox" class="t-opt" value="Ronaldo'nun Forması"> Ronaldo'nun Forması ⚽</label><br>
+            <button class="exe-btn" onclick="startDelivery()">SİPARİŞ VER</button>
         </div>
-        <button class="exe-btn" onclick="orderPizza()">SİPARİŞİ TAMAMLA</button>
-        <button class="exe-btn" onclick="this.parentElement.classList.add('hidden')" style="background:#300; color:#f00;">VAZGEÇ</button>
+        <div id="delivery-tracking" class="hidden">
+            <p style="color: #0f0;">🚀 CANLI TAKİP SİSTEMİ:</p>
+            <div id="delivery-status">
+                Yüzyıl: <span id="current-century" class="century-line">20. Yüzyıl</span><br>
+                Durum: <span id="delivery-msg">1924: Hamur Hazırlanıyor...</span>
+            </div>
+            <p style="font-size: 10px; margin-top:10px;">Teslimat Tarihi: 30 Nisan 2126</p>
+        </div>
+        <button class="exe-btn" onclick="closeWin('pizza-window')" style="background:#300; color:#f00; margin-top:10px;">KAPAT</button>
     </div>
 
     <div id="antivirus-window" class="window hidden">
         <div class="win-header">[SECURITY_SCANNER]</div>
-        <p style="text-align:center;">Sistemde 1 adet şüpheli dosya bulundu.</p>
-        <button class="exe-btn" onclick="rickroll()">TEHDİDİ TEMİZLE</button>
-        <button class="exe-btn" onclick="this.parentElement.classList.add('hidden')" style="background:#333; color:#eee;">İPTAL</button>
+        <p style="text-align:center;">1 Tehdit Bulundu: Trojan.RickRoll</p>
+        <button class="exe-btn" onclick="window.location.href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'">TEHDİDİ SİL</button>
+        <button class="exe-btn" onclick="closeWin('antivirus-window')" style="background:#333; color:#fff;">İPTAL</button>
+    </div>
+
+    <div id="boss-arena" class="hidden">
+        <div style="color:#f00; font-size:24px; margin-bottom:15px;">CORE_SECURITY_V14</div>
+        <div class="hp-bar-bg"><div id="boss-hp"></div></div>
+        <div style="font-size:80px; margin-bottom:20px;">👹</div>
+        <div id="boss-talk" style="color: #f00; text-align: center; margin-bottom: 20px;">VERİLERİNİ SİLECEĞİM!</div>
+        <button class="attack-btn" onclick="playerAttack(25)">BRUTE FORCE</button>
+        <button class="attack-btn" onclick="playerAttack(15)">LOG BOZUCU</button>
     </div>
 
     <div id="terminal-window" class="window hidden">
         <div class="win-header">[ROOT_TERMINAL]</div>
-        <input type="text" id="code-input" placeholder="KOMUT...">
-        <button class="exe-btn" onclick="checkCode()">ONAYLA</button>
-        <div id="terminal-output" style="margin-top:10px; height:200px; overflow:auto; border-top:1px solid #030;"></div>
-        <button class="exe-btn" onclick="this.parentElement.classList.add('hidden')" style="background:#300; color:#f00;">LOGOUT</button>
+        <input type="text" id="code-input" placeholder="ERİŞİM KODU VEYA KOMUT...">
+        <button class="exe-btn" onclick="checkCode()">YÜRÜT</button>
+        <div id="terminal-output" style="height:150px; overflow:auto; border-top:1px solid #030; margin-top:10px;"></div>
+        <button class="exe-btn" onclick="closeWin('terminal-window')" style="background:#300; color:#f00;">LOGOUT</button>
     </div>
 
     <div id="loading-box" class="window hidden">
@@ -106,68 +115,98 @@
 
     <div id="mail-window" class="window hidden">
         <div class="win-header">[GELEN_KUTUSU]</div>
-        <div class="output-line" onclick="alert('Kod: PIZZA-1924-COLD')">📩 Gizli Arşiv Şifresi</div>
-        <button class="exe-btn" onclick="this.parentElement.classList.add('hidden')">KAPAT</button>
+        <div class="output-line" onclick="alert('Arşiv Şifresi: PIZZA-1924-COLD')">📩 Sistem Bildirimi</div>
+        <button class="exe-btn" onclick="closeWin('mail-window')">KAPAT</button>
     </div>
 
     <script>
+        let bossHP = 100;
         const KOD_1 = "FLUX-666-PIZZA";
         const KOD_2 = "SABIRLI-VARIS-99";
         const KOD_SIL = "DESTRUCT_ALL_FILES";
 
-        function rickroll() {
-            // İzin istemeden direkt yönlendirir (Bazı tarayıcılar pop-up engelleyebilir ama link açma genelde çalışır)
-            window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-        }
-
-        function orderPizza() {
-            let selected = [];
-            document.querySelectorAll('.t-opt:checked').forEach(i => selected.push(i.value));
-            if(selected.length === 0) { alert("Malzeme seçmedin şef!"); return; }
-            alert("Siparişin: " + selected.join(", ") + "\n\nSiparişiniz 30 Nisan 2126 tarihinde kapınızda olacak!");
-        }
+        function openWin(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeWin(id) { document.getElementById(id).classList.add('hidden'); }
 
         function openFolder() {
             const lBox = document.getElementById('loading-box');
             const bar = document.getElementById('bar');
             lBox.classList.remove('hidden');
             let w = 0;
-            let timer = setInterval(() => {
+            let t = setInterval(() => {
                 w += 2; bar.style.width = w + "%";
-                if(w >= 100) {
-                    clearInterval(timer);
-                    alert("KOD BULUNDU: " + KOD_2);
-                    lBox.classList.add('hidden');
-                    bar.style.width = "0%";
+                if(w >= 100) { 
+                    clearInterval(t); 
+                    alert("GİZLİ KOD: " + KOD_2); 
+                    lBox.classList.add('hidden'); 
+                    bar.style.width="0%"; 
                 }
             }, 100);
         }
 
-        function checkCode() {
-            const inp = document.getElementById('code-input').value.toUpperCase();
-            const out = document.getElementById('terminal-output');
-            
-            if(inp === KOD_2) {
-                out.innerHTML += `
-                    <div style="color:yellow; padding:5px;">-- SABIRLI VARİS ARŞİVİ --</div>
-                    <div class="output-line" onclick="alert('İçerik: Bu sistem 100 yıl önce bir pizza borcu yüzünden kuruldu.')">📄 sistem_gecmisi.txt</div>
-                    <div class="output-line" onclick="alert('İçerik: Boss\'u yenmek için Brute Force kullanmalısın.')">📄 taktikler.cfg</div>
-                    <div class="output-line" onclick="alert('İçerik: Gizli bir dosya... Ama içi boş?')">📄 kurban_listesi.db</div>
-                `;
-            } else if(inp === "PIZZA-1924-COLD") {
-                out.innerHTML += "<p style='color:cyan;'>[ANALİZ]: Pizza hala buz gibi.</p>";
-            } else if(inp === KOD_SIL) {
-                document.body.innerHTML = "<h1 style='color:black; margin-top:20%; text-align:center;'>SİSTEM SİLİNDİ.</h1>";
-                document.body.style.backgroundColor = "white";
-            } else {
-                out.innerHTML += "<p style='color:red;'>Geçersiz!</p>";
-            }
+        function startDelivery() {
+            document.getElementById('pizza-order-form').classList.add('hidden');
+            document.getElementById('delivery-tracking').classList.remove('hidden');
+            const centuries = [
+                { c: "20. Yüzyıl", m: "1924: Malzemeler antik fırında pişiyor..." },
+                { c: "21. Yüzyıl", m: "2026: Zaman makinesi Tekirdağ üzerinden geçiyor..." },
+                { c: "22. Yüzyıl", m: "2110: Mars kuryesi siparişi devraldı..." },
+                { c: "TESLİM EDİLDİ", m: "30 Nisan 2126: Pizzan kapıda! (Biraz soğumuş olabilir)" }
+            ];
+            let i = 0;
+            let dInt = setInterval(() => {
+                if (i < centuries.length) {
+                    document.getElementById('current-century').innerText = centuries[i].c;
+                    document.getElementById('delivery-msg').innerText = centuries[i].m;
+                    i++;
+                } else { clearInterval(dInt); }
+            }, 3000);
         }
 
         function startSystemCheck() {
-            let s = prompt("Vârisim olup sistemi devralacak mısın? (EVET/HAYIR)");
-            if(s?.toUpperCase() === "EVET") alert("Kod: " + KOD_1);
-            else if(s?.toUpperCase() === "HAYIR") alert("Savaş sistemi yakında aktif olacak..."); 
+            let s = prompt("Sistemi devralacak mısın? (EVET/HAYIR)");
+            if(s?.toUpperCase() === "EVET") alert("Yetki Devredildi. Kod: " + KOD_1);
+            else if(s?.toUpperCase() === "HAYIR") {
+                document.getElementById('boss-arena').classList.remove('hidden');
+                bossHP = 100;
+                document.getElementById('boss-hp').style.width = "100%";
+            }
+        }
+
+        function playerAttack(dmg) {
+            bossHP -= dmg;
+            if(bossHP < 0) bossHP = 0;
+            document.getElementById('boss-hp').style.width = bossHP + "%";
+            if(bossHP <= 0) {
+                document.getElementById('boss-arena').innerHTML = `
+                    <div style="text-align:center;">
+                        <h1 style="color:#f00;">SİSTEM ÇÖKTÜ</h1>
+                        <p>YOK ETME KODU:</p>
+                        <h2 style="background:#fff; color:#000; padding:10px;">${KOD_SIL}</h2>
+                        <button onclick="location.reload()" style="padding:10px; cursor:pointer;">REBOOT</button>
+                    </div>`;
+            }
+        }
+
+        function checkCode() {
+            const inp = document.getElementById('code-input').value.trim().toUpperCase();
+            const out = document.getElementById('terminal-output');
+            
+            if(inp === KOD_1) {
+                out.innerHTML += `<div class="output-line" onclick="alert('Mors: HELP')">📄 Kurban_01.txt (Mors İçerir)</div>`;
+            } else if(inp === KOD_2) {
+                out.innerHTML += `
+                    <div class="output-line" onclick="alert('Log: Bu sistem 100 yıl önce bir pizza borcuyla başladı.')">📄 sistem_tarihi.log</div>
+                    <div class="output-line" onclick="alert('Taktik: Boss\'u yenmek için Brute Force kullan.')">📄 core_exploit.cfg</div>`;
+            } else if(inp === "PIZZA-1924-COLD") {
+                out.innerHTML += `<p style='color:cyan;'>[ANALİZ]: 100 yıllık pizza fosili tespit edildi. %0 Tazelik.</p>`;
+            } else if(inp === KOD_SIL) {
+                document.body.innerHTML = "<h1 style='color:black; margin-top:20%; text-align:center;'>SİSTEM SİLİNDİ.<br>Erişim Yok.</h1>";
+                document.body.style.backgroundColor = "white";
+            } else {
+                out.innerHTML += "<p style='color:red;'>[HATA]: Erişim reddedildi.</p>";
+            }
+            out.scrollTop = out.scrollHeight;
         }
     </script>
 </body>
