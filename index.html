@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminal</title>
+    <title>ALP_MASTER_V16.2_FULL</title>
     <style>
         body, html { margin: 0; padding: 0; background-color: #000; color: #0f0; font-family: 'Courier New', monospace; height: 100vh; overflow: hidden; user-select: none; }
         
@@ -28,8 +28,11 @@
         .hidden { display: none !important; }
 
         .exe-btn { background: #0f0; color: #000; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; font-family: 'Courier New'; }
-        .output-line { border-bottom: 1px solid #020; padding: 10px; font-size: 13px; cursor: pointer; color: #aaa; }
         input { background: #000; border: 1px solid #0f0; color: #0f0; padding: 12px; width: 100%; box-sizing: border-box; outline: none; }
+        #terminal-output { height:180px; overflow:auto; border-top:1px solid #030; margin-top:10px; font-size: 13px; }
+        
+        .progress-container { width: 100%; height: 20px; background: #010; border: 1px solid #0f0; margin-top: 10px; }
+        #bar { width: 0%; height: 100%; background: #0f0; transition: 0.1s; }
     </style>
 </head>
 <body>
@@ -44,36 +47,48 @@
     </div>
 
     <div id="terminal-window" class="window hidden">
-        <div class="win-header">[ROOT_TERMINAL_V15.5]</div>
-        <p style="font-size: 10px; color: #080;">Sponsorumuz için 'SPONSOR' yazın.</p>
-        <input type="text" id="code-input" placeholder="KOMUT GİRİNİZ...">
+        <div class="win-header">[ROOT_TERMINAL_V16.2]</div>
+        <div style="font-size: 10px; color: #080; margin-bottom: 5px;">
+            Hakkımızda bilgi öğrenmek için HAKKIMIZDA yazın.<br>
+            Sponsorumuz için SPONSOR yazın.
+        </div>
+        <input type="text" id="code-input" placeholder="KOMUTU GİRİNİZ...">
         <button class="exe-btn" onclick="checkCode()">YÜRÜT</button>
-        <div id="terminal-output" style="height:180px; overflow:auto; border-top:1px solid #030; margin-top:10px;"></div>
+        <div id="terminal-output"></div>
         <button class="exe-btn" onclick="closeWin('terminal-window')" style="background:#300; color:#f00;">LOGOUT</button>
     </div>
 
     <div id="antivirus-window" class="window hidden">
         <div class="win-header">[SYSTEM_ERROR_REPORT]</div>
         <div style="text-align:center;">
-            <p style="color: #ff0; font-weight: bold;">⚠️ BİLİNMEYEN DOSYA TESPİT EDİLDİ</p>
-            <p style="font-size: 13px;">Dosya: Kesinlikle-Virüs.exe</p>
+            <p style="color: #ff0; font-weight: bold;">⚠️ BİLİNMEYEN DOSYA</p>
+            <p>Kesinlikle-Virüs.exe</p>
             <button class="exe-btn" onclick="window.location.href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'">İNCELE VE TEMİZLE</button>
-            <button class="exe-btn" onclick="closeWin('antivirus-window')" style="background:#111; color:#555; font-size: 10px; border: 1px solid #222;">YOK SAY</button>
+            <button class="exe-btn" onclick="closeWin('antivirus-window')" style="background:#111; color:#555;">YOK SAY</button>
         </div>
     </div>
 
     <div id="pizza-window" class="window hidden">
-        <div class="win-header">[PIZZA_TIME]</div>
-        <button class="exe-btn" onclick="startDelivery()">SİPARİŞ VER</button>
+        <div class="win-header">[PIZZA_TRACKER_2126]</div>
+        <div id="pizza-form">
+            <p style="font-size: 12px;">Yüzyıllar sürecek bir lezzet yolculuğu...</p>
+            <button class="exe-btn" onclick="startDelivery()">SİPARİŞİ BAŞLAT</button>
+        </div>
         <div id="delivery-tracking" class="hidden">
-            <p>Durum: <span id="current-century" style="color:yellow;">20. Yüzyıl</span></p>
+            <p>Konum: <span id="current-century" style="color:yellow;">20. Yüzyıl</span></p>
+            <p style="font-size: 10px;">Tahmini Varış: 30 Nisan 2126</p>
         </div>
         <button class="exe-btn" onclick="closeWin('pizza-window')" style="background:#333;">KAPAT</button>
     </div>
 
+    <div id="loading-box" class="window hidden">
+        <div class="win-header">[DECRYPTING...]</div>
+        <div class="progress-container"><div id="bar"></div></div>
+    </div>
+
     <script>
-        const KOD_2 = "SABIRLI-VARIS-99";
-        const KOD_SIL = "DESTRUCT_ALL_FILES";
+        const KOD_VARIS = "SABIRLI-VARIS-99";
+        const KOD_PIZZA = "FLUX-666-PIZZA";
 
         function openWin(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeWin(id) { document.getElementById(id).classList.add('hidden'); }
@@ -82,40 +97,46 @@
             const inp = document.getElementById('code-input').value.trim().toUpperCase();
             const out = document.getElementById('terminal-output');
             
-            if(inp === "SPONSOR") {
-                out.innerHTML += `<p style="color:cyan;">[!] Sponsor yönlendirmesi başlatılıyor... Şalgamlar hazır!</p>`;
-                // İZİNSİZ AÇMA (YENİ SEKMEDE)
-                window.open("https://youtu.be/v-d1yI2kW_c?si=Emohwv5fp0Hd_6yw", "_blank");
-            } else if(inp === "HAKKIMIZDA") {
+            if(inp === "HAKKIMIZDA") {
                 out.innerHTML += `
-                    <div style="border:1px solid #0f0; padding:10px; margin-top:5px;">
-                        <p>Geliştirici: Alp Terminal Master</p>
+                    <div style="color:white; border:1px solid #0f0; padding:10px; margin-top:5px;">
+                        <p style="color:yellow; font-weight:bold;">--- SİSTEM BİLGİSİ ---</p>
+                        <p>Geliştirici: <span style="color:#0f0;">Alp Terminal Master</span></p>
                         <p>Durum: %0 Akıl / %100 Hacker</p>
-                        <p>Sponsor: Hacının Şalgamı (İçince yerinde duramıyor)</p>
                     </div>`;
-            } else if(inp === KOD_SIL) {
-                document.body.innerHTML = "<h1 style='color:black; text-align:center; margin-top:20%;'>SİSTEM SİLİNDİ.</h1>";
-                document.body.style.backgroundColor = "white";
+            } else if(inp === "SPONSOR") {
+                window.open("https://youtu.be/v-d1yI2kW_c?si=Emohwv5fp0Hd_6yw", "_blank");
+            } else if(inp === KOD_VARIS) {
+                out.innerHTML += `<p style="color:#0f0;">[OK] Gizli notlar açıldı: "Pizzayı 100 yıl bekleyen adamın dramı..."</p>`;
             } else {
-                out.innerHTML += `<p style="color:red;">[${inp}] komutu anlaşılamadı.</p>`;
+                out.innerHTML += `<p style="color:red;">[${inp}] komutu bulunamadı.</p>`;
             }
             out.scrollTop = out.scrollHeight;
         }
 
-        // Diğer fonksiyonlar (Pizza ve Boss) kodun devamında aynen çalışacaktır.
-        function startDelivery() {
-            document.getElementById('delivery-tracking').classList.remove('hidden');
-            let i = 0;
-            const cents = ["20. Yüzyıl", "21. Yüzyıl", "22. Yüzyıl", "TESLİM EDİLDİ"];
-            setInterval(() => { if(i<cents.length) { document.getElementById('current-century').innerText = cents[i]; i++; } }, 3000);
-        }
-        
         function openFolder() {
-            alert("ERİŞİM KODU: " + KOD_2);
+            openWin('loading-box');
+            let w = 0;
+            let t = setInterval(() => {
+                w += 2; document.getElementById('bar').style.width = w + "%";
+                if(w >= 100) { clearInterval(t); alert("ERİŞİM KODU: " + KOD_VARIS); closeWin('loading-box'); }
+            }, 50).catch(e => {}); // Güvenlik için
         }
 
         function startSystemCheck() {
-            if(prompt("Vâris misin?")?.toUpperCase() === "EVET") alert("Kod: FLUX-666-PIZZA");
+            if(prompt("Vâris misin?")?.toUpperCase() === "EVET") alert("GİZLİ KOD: " + KOD_PIZZA);
+            else alert("Erişim Reddedildi!");
+        }
+
+        function startDelivery() {
+            document.getElementById('pizza-form').classList.add('hidden');
+            document.getElementById('delivery-tracking').classList.remove('hidden');
+            let i = 0;
+            const cents = ["20. Yüzyıl", "21. Yüzyıl", "22. Yüzyıl", "2126 - KAPIDA!"];
+            let t = setInterval(() => {
+                if(i < cents.length) { document.getElementById('current-century').innerText = cents[i]; i++; }
+                else clearInterval(t);
+            }, 2000);
         }
     </script>
 </body>
