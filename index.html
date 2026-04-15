@@ -2,8 +2,10 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>TERMINAL_DESTRUCT_V4</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SİSTEM_DİZİNİ_V5</title>
     <style>
+        /* HACKER UI GÜNCELLEME - TÜM HATALAR GİDERİLDİ */
         body, html {
             margin: 0; padding: 0;
             background-color: #000;
@@ -17,41 +19,41 @@
             width: 100%; height: 100%;
             background: radial-gradient(circle, #001a00 0%, #000 100%);
             display: flex; flex-direction: column;
-            padding: 40px; gap: 25px;
+            padding: 40px; gap: 20px;
         }
 
         /* DEV İKONLAR */
         .hacker-icon {
             background: rgba(0, 30, 0, 0.3); border: 2px solid #030;
-            color: #0f0; width: 170px; padding: 20px;
+            color: #0f0; width: 160px; padding: 15px;
             cursor: pointer; display: flex; flex-direction: column;
-            align-items: center; transition: 0.2s; border-radius: 10px;
+            align-items: center; transition: 0.2s; border-radius: 8px;
+            outline: none;
         }
         .hacker-icon:hover { background: rgba(0, 255, 0, 0.1); border: 2px solid #0f0; box-shadow: 0 0 20px #0f0; }
-        .emoji { font-size: 60px; pointer-events: none; }
-        .label { font-size: 15px; font-weight: bold; margin-top: 10px; pointer-events: none; }
+        .emoji { font-size: 55px; pointer-events: none; }
+        .label { font-size: 14px; font-weight: bold; margin-top: 10px; pointer-events: none; }
 
-        /* PENCERE TASARIMI (DÜZELTİLDİ) */
+        /* PENCERE TASARIMI */
         .window {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             background: #000; border: 3px solid #0f0; padding: 20px;
-            z-index: 9999; width: 450px; max-width: 90%;
+            z-index: 9999; width: 420px; max-width: 90%;
             box-shadow: 0 0 50px rgba(0, 255, 0, 0.4);
-            box-sizing: border-box; /* Taşma sorununu çözer */
+            box-sizing: border-box;
         }
         .win-header { background: #0f0; color: #000; font-weight: bold; padding: 8px; text-align: center; margin: -20px -20px 20px -20px; }
         
-        /* E-POSTA ARAYÜZÜ */
-        .mail-list { max-height: 250px; overflow-y: auto; }
-        .mail-item { border-bottom: 1px solid #030; padding: 12px; cursor: pointer; transition: 0.3s; }
-        .mail-item:hover { background: #010; border-left: 4px solid #0f0; }
-        .mail-sender { color: yellow; font-weight: bold; font-size: 13px; display: block; }
-        .mail-subject { color: #fff; font-size: 14px; margin-top: 4px; }
+        /* E-POSTA STİLİ */
+        .mail-list { max-height: 200px; overflow-y: auto; text-align: left; }
+        .mail-item { border-bottom: 1px solid #030; padding: 10px; cursor: pointer; }
+        .mail-item:hover { background: #010; color: #fff; }
+        .mail-sender { font-weight: bold; color: yellow; font-size: 12px; }
 
         input { background: #000; border: 1px solid #0f0; color: #0f0; padding: 12px; width: 100%; box-sizing: border-box; margin-bottom: 15px; outline: none; }
         .exe-btn { background: #0f0; color: #000; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; }
         
-        .progress-container { width: 100%; height: 20px; background: #001100; border: 1px solid #0f0; margin-top: 15px; overflow: hidden; }
+        .progress-container { width: 100%; height: 20px; background: #001100; border: 1px solid #0f0; margin: 15px 0; overflow: hidden; }
         #bar { width: 0%; height: 100%; background: #0f0; }
         
         .hidden { display: none !important; }
@@ -83,40 +85,36 @@
     </div>
 
     <div id="loading-box" class="window hidden">
-        <div class="win-header">[DECRYPTING_DATA]</div>
-        <p id="load-text" style="text-align:center;">Arşiv dosyaları taranıyor... Eski kurbanların izleri aranıyor.</p>
+        <div class="win-header">[DECRYPTING_FILES]</div>
+        <p style="text-align:center;">Arşiv çözülüyor... Lütfen bekleyin.</p>
         <div class="progress-container"><div id="bar"></div></div>
     </div>
 
     <div id="mail-window" class="window hidden">
         <div class="win-header">[GELEN_KUTUSU]</div>
         <div class="mail-list">
-            <div class="mail-item" onclick="alert('KİM: Pizzacı\nKONU: Gecikme Hakkında\n\nMesaj: Abi kusura bakma, sipariş biraz gecikti. 100 yıl kadar... Kapıya bıraktık ama pizza fosilleşmiş olabilir.')">
-                <span class="mail-sender">Pizzacı:</span> Siparişin durumu
+            <div class="mail-item" onclick="alert('KİM: Pizzacı\nKONU: Gecikme\n\nMesaj: Abi senin 100 yıl önceki pizza kapıda fosilleşmiş.')">
+                <span class="mail-sender">Pizzacı:</span> Sipariş Hakkında
             </div>
-            <div class="mail-item" onclick="alert('KİM: Eski_Varis_01\nKONU: Sakın Girme\n\nMesaj: Terminale sakın ARCHIVE-X kodunu yazma. Orada gördüklerim uykularımı kaçırdı.')">
-                <span class="mail-sender">Eski_Varis_01:</span> UYARI: Sakın deneme!
-            </div>
-            <div class="mail-item" onclick="alert('KİM: Sistem\nKONU: Şifre Değişikliği\n\nMesaj: Güvenlik protokolü gereği yeni arşiv şifreniz oluşturuldu: PIZZA-1924-COLD')">
-                <span class="mail-sender">Sistem:</span> [GİZLİ] Arşiv Şifresi
+            <div class="mail-item" onclick="alert('KİM: Sistem\nKONU: Gizli Veri\n\nMesaj: Yeni erişim kodun: PIZZA-1924-COLD')">
+                <span class="mail-sender">Sistem:</span> [GİZLİ] Arşiv Kodu
             </div>
         </div>
-        <span class="close-btn" onclick="document.getElementById('mail-window').classList.add('hidden')">[PENCEREYİ KAPAT]</span>
+        <span class="close-btn" onclick="document.getElementById('mail-window').classList.add('hidden')">[KAPAT]</span>
     </div>
 
     <div id="terminal-window" class="window hidden">
         <div class="win-header">[ROOT_TERMINAL]</div>
-        <input type="text" id="code-input" placeholder="ERİŞİM KODU..." autocomplete="off">
-        <button class="exe-btn" onclick="checkCode()">YÜRÜT (EXECUTE)</button>
-        <div id="terminal-output" style="margin-top:15px; max-height:150px; overflow-y:auto; font-size:13px; border-top: 1px dashed #0f0; padding-top: 10px;"></div>
+        <input type="text" id="code-input" placeholder="KOD_GİRİNİZ..." autocomplete="off">
+        <button class="exe-btn" onclick="checkCode()">ONAYLA</button>
+        <div id="terminal-output" style="margin-top:15px; max-height:100px; overflow-y:auto; font-size:12px;"></div>
         <span class="close-btn" onclick="document.getElementById('terminal-window').classList.add('hidden')">[LOGOUT]</span>
     </div>
 
     <script>
         const KOD_1 = "FLUX-666-PIZZA";
         const KOD_2 = "SABIRLI-VARIS-99";
-        const KOD_3 = "ARCHIVE-X";
-        const KOD_4 = "PIZZA-1924-COLD"; // E-postadan gelen yeni kod
+        const KOD_3 = "PIZZA-1924-COLD";
         let timer;
 
         function openFolder() {
@@ -129,7 +127,7 @@
                 w += 2; bar.style.width = w + "%";
                 if(w >= 100) {
                     clearInterval(timer);
-                    alert("ARŞİV ÇÖZÜLDÜ!\nGizli Kod: " + KOD_2);
+                    alert("GİZLİ KOD ÇÖZÜLDÜ: " + KOD_2);
                     lBox.classList.add('hidden');
                     bar.style.width = "0%";
                 }
@@ -142,25 +140,17 @@
         function checkCode() {
             const inp = document.getElementById('code-input').value.toUpperCase();
             const out = document.getElementById('terminal-output');
-            
-            if(inp === KOD_1) {
-                out.innerHTML += "<p style='color:yellow;'>[FLUX]: Kurban_01 verileri açıldı. (Mors: HELP)</p>";
-            } else if(inp === KOD_2) {
-                out.innerHTML += "<p style='color:cyan;'>[SABIR]: 100 yıllık borç listesi görüntülendi.</p>";
-            } else if(inp === KOD_3) {
-                out.innerHTML += "<p style='color:#f00;'>[KRİTİK]: ARCHIVE-X açıldı. 'Gözler her yerde...'</p>";
-            } else if(inp === KOD_4) {
-                out.innerHTML += "<p style='color:#fff;'>[PIZZA]: Fosil pizza analizi: %100 pepperoni, %0 tazelik.</p>";
-            } else {
-                out.innerHTML += "<p style='color:red;'>[HATA]: Erişim reddedildi.</p>";
-            }
+            if(inp === KOD_1) out.innerHTML += "<p style='color:yellow;'>[FLUX]: Kurban_01 verileri açıldı. (Mors: HELP)</p>";
+            else if(inp === KOD_2) out.innerHTML += "<p style='color:cyan;'>[SABIR]: 100 yıllık pizza faturası bulundu.</p>";
+            else if(inp === KOD_3) out.innerHTML += "<p style='color:white;'>[PIZZA]: Fosil analizi tamamlandı: %0 Tazelik.</p>";
+            else out.innerHTML += "<p style='color:red;'>[HATA]: Erişim reddedildi.</p>";
             out.scrollTop = out.scrollHeight;
         }
 
         function startFinal() {
             let s = prompt("Vârisim olup sistemi devralacak mısın? (EVET/HAYIR)");
             if(s?.toUpperCase() === "EVET") {
-                document.body.innerHTML = `<div style="background:#000; color:#0f0; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; font-family:monospace;"><h1>[YETKİ_DEVREDİLDİ]</h1><p style='font-size:24px;'>KODUN: ${KOD_1}</p><button onclick="location.reload()" style="background:#0f0; border:none; padding:15px; cursor:pointer; margin-top:20px; font-weight:bold;">SİSTEME DÖN</button></div>`;
+                document.body.innerHTML = `<div style="background:#000; color:#0f0; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;"><h1>[YETKİ_DEVREDİLDİ]</h1><p>KODUN: ${KOD_1}</p><button onclick="location.reload()" style="background:#0f0; border:none; padding:10px; cursor:pointer; margin-top:20px;">DÖN</button></div>`;
             }
         }
     </script>
