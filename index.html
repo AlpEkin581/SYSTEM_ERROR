@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL_BOSS_FIX_V8</title>
+    <title>TERMINAL_PIZZA_SYSTEM_V9</title>
     <style>
         body, html { margin: 0; padding: 0; background-color: #000; color: #0f0; font-family: 'Courier New', monospace; height: 100vh; overflow: hidden; user-select: none; }
         #desktop { width: 100%; height: 100%; background: radial-gradient(circle, #001a00 0%, #000 100%); display: flex; flex-direction: column; padding: 40px; gap: 20px; }
@@ -19,17 +19,17 @@
         .win-header { background: #0f0; color: #000; font-weight: bold; padding: 8px; text-align: center; margin: -20px -20px 15px -20px; }
         .hidden { display: none !important; }
 
+        /* PİZZACI ARAYÜZÜ */
+        .pizza-menu { display: flex; flex-direction: column; gap: 10px; }
+        .topping-btn { background: #111; border: 1px solid #0f0; color: #0f0; padding: 10px; cursor: pointer; text-align: left; }
+        .topping-btn:hover { background: #0f0; color: #000; }
+
         /* BOSS ARENA */
         #boss-arena { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .boss-name { color: #f00; font-size: 24px; font-weight: bold; text-shadow: 0 0 15px #f00; margin-bottom: 15px; }
         .hp-bar-bg { width: 80%; height: 25px; background: #300; border: 2px solid #f00; margin-bottom: 40px; }
         #boss-hp { width: 100%; height: 100%; background: #f00; transition: 0.3s; }
-        .boss-sprite { font-size: 100px; margin-bottom: 30px; animation: shake 0.5s infinite; }
         .battle-controls { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
         .attack-btn { background: #000; border: 2px solid #0f0; color: #0f0; padding: 12px 20px; cursor: pointer; font-family: monospace; font-weight: bold; }
-        .attack-btn:hover { background: #0f0; color: #000; }
-
-        @keyframes shake { 0% { transform: translate(1px, 1px); } 20% { transform: translate(-3px, 0px); } 100% { transform: translate(0px, 0px); } }
 
         .exe-btn { background: #0f0; color: #000; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
         input { background: #000; border: 1px solid #0f0; color: #0f0; padding: 12px; width: 100%; box-sizing: border-box; outline: none; }
@@ -46,6 +46,10 @@
             <span class="emoji">📧</span>
             <span class="label">E-POSTA</span>
         </button>
+        <button class="hacker-icon" onclick="document.getElementById('pizza-window').classList.remove('hidden')">
+            <span class="emoji">🍕</span>
+            <span class="label">PİZZACI</span>
+        </button>
         <button class="hacker-icon" onclick="document.getElementById('terminal-window').classList.remove('hidden')">
             <span class="emoji">📟</span>
             <span class="label">TERMİNAL</span>
@@ -56,94 +60,90 @@
         </button>
     </div>
 
-    <div id="boss-arena" class="hidden">
-        <div class="boss-name">CORE_SECURITY_V8</div>
-        <div class="hp-bar-bg"><div id="boss-hp"></div></div>
-        <div id="boss-visual" class="boss-sprite">👹</div>
-        <p id="boss-talk" style="color: #f00; font-weight: bold; margin-bottom: 20px; text-align: center;">[SİSTEM]: İSYAN TESPİT EDİLDİ. YOK EDİLİYORSUN...</p>
-        <div class="battle-controls">
-            <button class="attack-btn" onclick="playerAttack(15, 'LOG_BOZUCU')">LOGLARI BOZ</button>
-            <button class="attack-btn" onclick="playerAttack(30, 'BRUTE_FORCE')">ZORLA GİRİŞ</button>
-            <button class="attack-btn" onclick="playerAttack(10, 'BYPASS_V1')">SAVUNMA GEÇ</button>
+    <div id="pizza-window" class="window hidden">
+        <div class="win-header">[PİZZA_ORDER_V1]</div>
+        <p style="font-size: 12px; color: yellow;">Siparişiniz 100 yıl sonra teslim edilecektir.</p>
+        <div class="pizza-menu">
+            <button class="topping-btn" onclick="addPizza('Fosil Sucuk')">🍕 Fosil Sucuk Ekle</button>
+            <button class="topping-btn" onclick="addPizza('Tozlanmış Peynir')">🧀 Tozlanmış Peynir Ekle</button>
+            <button class="topping-btn" onclick="addPizza('Antik Zeytin')">🫒 Antik Zeytin Ekle</button>
+            <button class="exe-btn" onclick="orderPizza()">SİPARİŞ VER (19.24 TL)</button>
         </div>
+        <button class="exe-btn" onclick="this.parentElement.classList.add('hidden')" style="background:#300; color:#f00;">İPTAL</button>
     </div>
 
-    <div id="mail-window" class="window hidden">
-        <div class="win-header">[GELEN_KUTUSU]</div>
-        <div style="font-size:12px; border-bottom:1px solid #030; padding:10px;">KİM: Pizzacı - KONU: 100 Yıllık Borç</div>
-        <div style="font-size:12px; border-bottom:1px solid #030; padding:10px;">KİM: Sistem - KONU: Kod: PIZZA-1924-COLD</div>
-        <button class="exe-btn" onclick="this.parentElement.classList.add('hidden')">KAPAT</button>
+    <div id="boss-arena" class="hidden">
+        <div style="color:#f00; font-size:24px; margin-bottom:10px;">CORE_SECURITY_V9</div>
+        <div class="hp-bar-bg"><div id="boss-hp"></div></div>
+        <div style="font-size:100px; margin-bottom:30px;">👹</div>
+        <p id="boss-talk" style="color: #f00; text-align: center;">[SİSTEM]: VERİLERİNİ ÇİĞNEYECEĞİM...</p>
+        <div class="battle-controls">
+            <button class="attack-btn" onclick="playerAttack(20, 'VİRÜS_ENJEKTE')">VİRÜS AT</button>
+            <button class="attack-btn" onclick="playerAttack(40, 'SYSTEM_OVERLOAD')">SİSTEMİ YOR</button>
+        </div>
     </div>
 
     <div id="terminal-window" class="window hidden">
         <div class="win-header">[ROOT_TERMINAL]</div>
-        <input type="text" id="code-input" placeholder="KOMUT VEYA KOD GİRİN...">
+        <input type="text" id="code-input" placeholder="KOMUT...">
         <button class="exe-btn" onclick="checkCode()">YÜRÜT</button>
         <div id="terminal-output" style="margin-top:10px; font-size:11px; height:80px; overflow:auto;"></div>
         <button class="exe-btn" onclick="this.parentElement.classList.add('hidden')" style="background:#300; color:#f00;">ÇIKIŞ</button>
     </div>
 
+    <div id="mail-window" class="window hidden">
+        <div class="win-header">[GELEN_KUTUSU]</div>
+        <div style="font-size:12px; border-bottom:1px solid #030; padding:10px;">KİM: Pizzacı - 100 yıllık borç var.</div>
+        <div style="font-size:12px; border-bottom:1px solid #030; padding:10px;">KİM: Sistem - Kod: PIZZA-1924-COLD</div>
+        <button class="exe-btn" onclick="this.parentElement.classList.add('hidden')">KAPAT</button>
+    </div>
+
     <script>
         let bossHP = 100;
+        let selectedToppings = [];
         const KOD_1 = "FLUX-666-PIZZA";
         const KOD_SIL = "DESTRUCT_ALL_FILES";
 
-        function startSystemCheck() {
-            let s = prompt("Vârisim olup sistemi devralacak mısın? (EVET/HAYIR)");
-            if(s === null) return; // İptal edilirse bişey yapma
-
-            let cevap = s.trim().toUpperCase(); // Boşlukları sil ve büyük harf yap
-
-            if(cevap === "EVET") {
-                alert("Yetki devredildi. Kodun: " + KOD_1);
-            } else if(cevap === "HAYIR") {
-                // BOSS ARENASINI TETİKLE
-                console.log("Boss Arena Açılıyor..."); // Hata kontrolü için
-                document.getElementById('boss-arena').classList.remove('hidden');
-                bossSpeak("SİSTEME İHANET ETTİN. VERİLERİN SİLİNİYOR!");
-            } else {
-                alert("Sadece EVET veya HAYIR geçerlidir.");
-            }
+        function addPizza(t) { selectedToppings.push(t); alert(t + " eklendi!"); }
+        function orderPizza() {
+            if(selectedToppings.length === 0) alert("Önce malzeme seç!");
+            else alert("Sipariş alındı: " + selectedToppings.join(", ") + "\nTahmini teslimat: 30 Nisan 2126.");
         }
 
-        function bossSpeak(txt) {
-            document.getElementById('boss-talk').innerText = "[SİSTEM]: " + txt;
+        function startSystemCheck() {
+            let s = prompt("Vârisim olup sistemi devralacak mısın? (EVET/HAYIR)");
+            if(s?.toUpperCase() === "EVET") alert("Kodun: " + KOD_1);
+            else if(s?.toUpperCase() === "HAYIR") {
+                document.getElementById('boss-arena').classList.remove('hidden');
+            }
         }
 
         function playerAttack(dmg, type) {
             bossHP -= dmg;
-            if(bossHP < 0) bossHP = 0;
             document.getElementById('boss-hp').style.width = bossHP + "%";
-            bossSpeak(type + " BAŞARILI!");
-            
             if(bossHP <= 0) {
-                document.getElementById('boss-arena').innerHTML = `
-                    <div style="text-align:center; color:#0f0;">
-                        <h1 style="color:#f00; font-size:30px;">[SİSTEM ÇÖKTÜ]</h1>
-                        <p>YOK ETME KODU:</p>
-                        <p style="font-size:24px; background:#fff; color:#000; padding:10px;">${KOD_SIL}</p>
-                        <button onclick="location.reload()" style="padding:10px; background:#0f0; border:none; cursor:pointer;">DÖN</button>
-                    </div>`;
+                document.getElementById('boss-arena').innerHTML = `<div style="text-align:center;"><h1 style="color:#f00;">SİSTEM ÇÖKTÜ</h1><p>YOK ETME KODUN:</p><h2 style="background:#fff; color:#000;">${KOD_SIL}</h2><button onclick="location.reload()" style="padding:10px;">GERİ DÖN</button></div>`;
             }
         }
 
         function checkCode() {
-            const inp = document.getElementById('code-input').value.trim().toUpperCase();
-            const out = document.getElementById('terminal-output');
-            
-            if(inp === KOD_1) out.innerHTML += "<p>[OK]: Kurban verileri açıldı.</p>";
-            else if(inp === "PIZZA-1924-COLD") out.innerHTML += "<p>[OK]: Analiz: %0 Tazelik.</p>";
-            else if(inp === KOD_SIL) {
+            const inp = document.getElementById('code-input').value.toUpperCase();
+            if(inp === KOD_SIL) {
+                // KALICI SİLME EFEKTİ
+                document.body.innerHTML = "";
                 document.body.style.backgroundColor = "white";
-                document.body.innerHTML = "<h1 style='color:black; font-family:monospace; text-align:center; padding-top:200px;'>SİSTEM TAMAMEN SİLİNDİ.</h1>";
-                setTimeout(() => { location.reload(); }, 2500);
-            } else out.innerHTML += "<p style='color:red;'>[HATA]: Erişim reddedildi.</p>";
-            out.scrollTop = out.scrollHeight;
+                setTimeout(() => {
+                    document.body.innerHTML = "<h1 style='color:black; font-family:monospace; margin-top:20%; text-align:center;'>SİSTEM TAMAMEN SİLİNDİ.<br><br>Erişim Yok.</h1>";
+                }, 500);
+                // location.reload() YOK! Sayfa beyaz kalacak.
+            } else if(inp === KOD_1) {
+                document.getElementById('terminal-output').innerHTML += "<p>[OK]: Arşiv açıldı.</p>";
+            } else {
+                alert("Hatalı Kod!");
+            }
         }
 
-        function openFolder() {
-            alert("Dosyalar çözülüyor... Sabırlı Vâris kodu: SABIRLI-VARIS-99");
-        }
+        function openFolder() { alert("Kod: SABIRLI-VARIS-99"); }
     </script>
 </body>
 </html>
