@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALP_TERMINAL_V22_HUB</title>
+    <title>ALP_MASTER_V25_FINAL</title>
     <style>
         body, html { margin: 0; padding: 0; background-color: #000; color: #0f0; font-family: 'Courier New', monospace; height: 100vh; overflow: hidden; user-select: none; }
         #desktop { width: 100%; height: 100%; background: radial-gradient(circle, #001a00 0%, #000 100%); display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: min-content; padding: 40px; gap: 25px; box-sizing: border-box; }
@@ -11,17 +11,23 @@
         .hacker-icon:hover { background: rgba(0, 255, 0, 0.1); border: 2px solid #0f0; box-shadow: 0 0 20px #0f0; }
         .emoji { font-size: 50px; pointer-events: none; }
         .label { font-size: 13px; font-weight: bold; margin-top: 10px; pointer-events: none; }
+        
+        /* PENCERE TASARIMLARI */
         .window { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #000; border: 3px solid #0f0; padding: 20px; z-index: 100; width: 450px; box-shadow: 0 0 40px rgba(0, 255, 0, 0.4); box-sizing: border-box; }
         .win-header { background: #0f0; color: #000; font-weight: bold; padding: 8px; text-align: center; margin: -20px -20px 15px -20px; }
         .hidden { display: none !important; }
+        
         .exe-btn { background: #0f0; color: #000; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; font-family: 'Courier New'; }
         input { background: #000; border: 1px solid #0f0; color: #0f0; padding: 12px; width: 100%; box-sizing: border-box; outline: none; }
-        #terminal-output { height:150px; overflow:auto; border-top:1px solid #030; margin-top:10px; font-size: 12px; }
-        .progress-container { width: 100%; height: 20px; background: #010; border: 1px solid #0f0; margin-top: 10px; position: relative; overflow: hidden; }
-        #bar { width: 0%; height: 100%; background: #0f0; position: absolute; }
-        .invoice { background: #fff; color: #000; padding: 20px; font-family: 'Arial', sans-serif; font-size: 12px; border: 1px dashed #000; color: black !important; }
+        #terminal-output { height:120px; overflow:auto; border-top:1px solid #030; margin-top:10px; font-size: 12px; }
+        
+        /* INTERAKTİF DOSYA STİLLERİ */
+        .white-paper { background: #fff; color: #000; padding: 20px; font-family: 'Arial', sans-serif; border: 1px dashed #000; font-size: 13px; }
+        .flux-log { color: #00ffff; text-shadow: 0 0 8px #00ffff; font-size: 14px; }
+        .archive-txt { color: #ffff00; font-size: 13px; border-left: 3px solid #ffff00; padding-left: 10px; }
+        
         #boss-arena { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .hp-bar-bg { width: 80%; height: 25px; background: #300; border: 2px solid #f00; margin-bottom: 20px; }
+        .hp-bar { width: 80%; height: 20px; border: 2px solid #f00; margin-bottom: 20px; background: #300; }
     </style>
 </head>
 <body>
@@ -36,60 +42,86 @@
     </div>
 
     <div id="terminal-window" class="window hidden">
-        <div class="win-header">[ALP_TERM_V22]</div>
-        <div style="font-size: 10px; color: #080; margin-bottom: 5px;">HAKKIMIZDA | SPONSOR | PIZZA-1924-COLD | FLUX-666-PIZZA</div>
-        <input type="text" id="code-input" placeholder="KOMUT VEYA KOD GİRİN...">
-        <button class="exe-btn" onclick="checkCode()">YÜRÜT</button>
+        <div class="win-header">[ALP_GHOST_TERMINAL_V25]</div>
+        <input type="text" id="code-input" placeholder="KOMUT..." autofocus>
+        <button class="exe-btn" onclick="checkCode()">YÜRÜT (EXECUTE)</button>
         <div id="terminal-output"></div>
         <button class="exe-btn" onclick="closeWin('terminal-window')" style="background:#300; color:#f00;">LOGOUT</button>
     </div>
 
-    <div id="antivirus-window" class="window hidden">
-        <div class="win-header">[PROTECTION_SHIELD]</div>
-        <div style="text-align:center;">
-            <p style="color:red; font-weight:bold;">⚠️ TEHLİKE: Kesinlikle-Virüs.exe</p>
-            <button class="exe-btn" onclick="window.location.href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'">SİSTEMİ İNCELE</button>
-            <button class="exe-btn" onclick="closeWin('antivirus-window')" style="background:#222; color:#fff;">KAPAT</button>
-        </div>
+    <div id="file-1" class="window hidden">
+        <div class="win-header">DOSYA: IDENTITY.SYS</div>
+        <p style="color:#0f0;">> DEVELOPER: Alp Master</p>
+        <p style="color:#0f0;">> STATUS: Beyni %100 CPU Kullanıyor / Mantık Devre Dışı</p>
+        <p style="color:#0f0;">> BIO: Çorlu'dan dünyaya siber selamlar.</p>
+        <button class="exe-btn" onclick="closeWin('file-1')">KAPAT</button>
     </div>
 
-    <div id="invoice-window" class="window hidden">
-        <div class="win-header">FATURA: #1924-COLD</div>
-        <div class="invoice">
-            <center><strong>ALP'S LEGACY PIZZA</strong></center><br>
-            Müşteri: Sabırlı Vâris | Tarih: 30.04.1924<br>
+    <div id="file-2" class="window hidden">
+        <div class="win-header">DOSYA: INVOICE_1924.PDF</div>
+        <div class="white-paper">
+            <center><strong>ALP'S LEGACY PIZZA & ŞALGAM</strong></center><br>
+            Tarih: 30.04.1924 | Vâris: Sabırlı<br>
             --------------------------------<br>
             1x Hacker Pizza (L).......... 0.50 TL<br>
-            1x Hacının Şalgamı........... 0.00 TL<br>
-            102 Yıllık Sabır Bedeli....... 999.99 TL<br>
+            1x Hacının Şalgamı (SPONSOR).. 0.00 TL<br>
+            102 Yıllık Enflasyon Farkı.... 999.99 TL<br>
             --------------------------------<br>
             <strong>TOPLAM: 1000.49 TL</strong>
         </div>
-        <button class="exe-btn" onclick="closeWin('invoice-window')">ARŞİVE DÖN</button>
+        <button class="exe-btn" onclick="closeWin('file-2')">DOSYAYI ARŞİVLE</button>
     </div>
 
-    <div id="mail-window" class="window hidden">
-        <div class="win-header">[GELEN KUTUSU]</div>
-        <div style="border:1px solid #030; padding:10px; cursor:pointer;" onclick="alert('Bu kodu terminale yazmalısın master!')">📩 Arşiv: PIZZA-1924-COLD</div>
-        <button class="exe-btn" onclick="closeWin('mail-window')">KAPAT</button>
+    <div id="file-3" class="window hidden">
+        <div class="win-header">DOSYA: FLUX_SYSTEM.LOG</div>
+        <div class="flux-log">
+            <p>[SYSTEM] 2126 Modu Aktif Edildi.</p>
+            <p>[DATA] Pizzalar hala taze, şalgam buz gibi.</p>
+            <p>[INFO] Master Key: FLUX-666-PIZZA</p>
+        </div>
+        <button class="exe-btn" onclick="closeWin('file-3')">KAPAT</button>
+    </div>
+
+    <div id="file-4" class="window hidden">
+        <div class="win-header">DOSYA: SECRET_VAULT.TXT</div>
+        <div class="archive-txt">
+            <p>> GİRİŞ 01: Operasyon başlatıldı.</p>
+            <p>> GİRİŞ 42: Pusu sistemi devreye alındı.</p>
+            <p>> GİRİŞ 99: Sabırlı vâris bekleniyor...</p>
+        </div>
+        <button class="exe-btn" onclick="closeWin('file-4')">KAPAT</button>
+    </div>
+
+    <div id="pizza-window" class="window hidden">
+        <div class="win-header">[PIZZA_TRACKER_V2]</div>
+        <p>1924'ten beri yolda. Çıkış devre dışı!</p>
+        <div id="p-status" style="color:yellow; font-weight:bold; margin: 15px 0;">BEKLENİYOR...</div>
+        <button class="exe-btn" onclick="startDelivery()">TAKİBİ BAŞLAT</button>
+    </div>
+
+    <div id="antivirus-window" class="window hidden">
+        <div class="win-header">[ALP_GUARD_PROTECTION]</div>
+        <p style="text-align:center; color:red;">Tehlike: Kesinlikle-Virüs.exe</p>
+        <button class="exe-btn" onclick="window.location.href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'">DETAYLI İNCELE</button>
+        <button class="exe-btn" onclick="closeWin('antivirus-window')" style="background:#222; color:#fff;">KAPAT</button>
     </div>
 
     <div id="boss-arena" class="hidden">
-        <h2 style="color:red;">BOSS ARENA</h2>
-        <div class="hp-bar-bg"><div id="boss-hp" style="width:100%; height:100%; background:red;"></div></div>
+        <h2 style="color:red;">SİSTEM KORUYUCUSU</h2>
+        <div class="hp-bar"><div id="boss-hp" style="width:100%; height:100%; background:red;"></div></div>
         <div style="font-size:100px;">👹</div>
         <button class="exe-btn" onclick="bossHit(25)" style="width:200px;">SALDIR!</button>
     </div>
 
-    <div id="loading-box" class="window hidden">
-        <div class="win-header">[DECRYPTING...]</div>
-        <div class="progress-container"><div id="bar"></div></div>
+    <div id="mail-window" class="window hidden">
+        <div class="win-header">[GELEN KUTUSU]</div>
+        <p style="cursor:pointer;" onclick="alert('Bunu terminale yazman lazım şef!')">📩 Kod: PIZZA-1924-COLD</p>
+        <button class="exe-btn" onclick="closeWin('mail-window')">KAPAT</button>
     </div>
 
-    <div id="pizza-window" class="window hidden">
-        <div class="win-header">[PIZZA_TRACKER]</div>
-        <button class="exe-btn" onclick="startDelivery()">TESLİMATI BAŞLAT</button>
-        <p id="p-status" style="color:yellow; margin-top:10px;"></p>
+    <div id="loading-box" class="window hidden">
+        <div class="win-header">[DECRYPTING...]</div>
+        <div style="width:100%; height:20px; border:1px solid #0f0;"><div id="bar" style="width:0%; height:100%; background:#0f0;"></div></div>
     </div>
 
     <script>
@@ -107,22 +139,25 @@
             const out = document.getElementById('terminal-output');
             
             if(inp === "HAKKIMIZDA") {
-                out.innerHTML += `<div style="border:1px solid #0f0; padding:10px; margin-top:5px; color:white;">
-                    <p style="color:yellow;">--- ALP MASTER V22 ---</p>
-                    <p>Durum: <span style="color:#0f0;">Beyni %100 CPU Kullanıyor / Mantık Devre Dışı</span></p>
-                </div>`;
+                openWin('file-1');
+                out.innerHTML += `<p style="color:cyan;">[AÇILDI] IDENTITY.SYS</p>`;
+            } else if(inp === KOD_FATURA) {
+                openWin('file-2');
+                out.innerHTML += `<p style="color:cyan;">[AÇILDI] INVOICE_1924.PDF</p>`;
+            } else if(inp === KOD_1) {
+                openWin('file-3');
+                out.innerHTML += `<p style="color:cyan;">[AÇILDI] FLUX_SYSTEM.LOG</p>`;
+            } else if(inp === KOD_2) {
+                openWin('file-4');
+                out.innerHTML += `<p style="color:cyan;">[AÇILDI] SECRET_VAULT.TXT</p>`;
             } else if(inp === "SPONSOR") {
                 window.open("https://youtu.be/v-d1yI2kW_c?si=Emohwv5fp0Hd_6yw", "_blank");
-            } else if(inp === KOD_FATURA) {
-                out.innerHTML += `<p style="color:white;">[OK] Fatura dosyası açıldı.</p>`;
-                openWin('invoice-window');
-            } else if(inp === KOD_1) {
-                out.innerHTML += `<p style="color:cyan;">[UYARI] Sistem 2126 moduna alındı. Pizzalar tazeleniyor...</p>`;
+                out.innerHTML += `<p style="color:cyan;">[REKLAM] Sponsor sayfasına gidiliyor...</p>`;
             } else if(inp === KOD_SIL) {
                 document.body.innerHTML = "<h1 style='color:black; text-align:center; margin-top:20%;'>SİSTEM SİLİNDİ.</h1>";
                 document.body.style.backgroundColor = "white";
             } else {
-                out.innerHTML += `<p style="color:red;">[${inp}] bilinmiyor.</p>`;
+                out.innerHTML += `<p style="color:red;">[${inp}] komutu bulunamadı!</p>`;
             }
             out.scrollTop = out.scrollHeight;
         }
@@ -131,7 +166,7 @@
             openWin('loading-box');
             let w = 0;
             let t = setInterval(() => {
-                w += 5; document.getElementById('bar').style.width = w + "%";
+                w += 10; document.getElementById('bar').style.width = w + "%";
                 if(w >= 100) { clearInterval(t); alert("ERİŞİM KODU: " + KOD_2); closeWin('loading-box'); document.getElementById('bar').style.width="0%"; }
             }, 50);
         }
@@ -139,19 +174,18 @@
         function startSystemCheck() {
             let res = prompt("Vâris misin?");
             if(res?.toUpperCase() === "EVET") alert("KOD: " + KOD_1);
-            else { openWin('boss-arena'); bossHP = 100; document.getElementById('boss-hp').style.width = "100%"; }
+            else { openWin('boss-arena'); bossHP = 100; document.getElementById('boss-hp').style.width="100%"; }
         }
 
         function bossHit(dmg) {
             bossHP -= dmg;
             document.getElementById('boss-hp').style.width = bossHP + "%";
-            if(bossHP <= 0) { alert("Boss Yenildi! Silme Kodu: " + KOD_SIL); document.getElementById('boss-arena').classList.add('hidden'); }
+            if(bossHP <= 0) { alert("MAĞLUP EDİLDİ! SİLME KODU: " + KOD_SIL); document.getElementById('boss-arena').classList.add('hidden'); }
         }
 
         function startDelivery() {
-            const p = document.getElementById('p-status');
-            let i = 0; const msg = ["1924: Fırında", "2026: Tekirdağ Giriş", "2126: Kapıda!"];
-            setInterval(() => { if(i < msg.length) { p.innerText = msg[i]; i++; } }, 2000);
+            let i = 0; const steps = ["1924: Fırında", "2026: Yolda", "2126: Kapıda!"];
+            setInterval(() => { if(i < steps.length) { document.getElementById('p-status').innerText = steps[i]; i++; } }, 1500);
         }
     </script>
 </body>
