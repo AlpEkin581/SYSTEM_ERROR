@@ -10,30 +10,37 @@
         
         /* CRT Ekran Efekti */
         body::before { content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); z-index: 2000; background-size: 100% 2px, 3px 100%; pointer-events: none; }
-        
+        body::after { content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background: rgba(18, 16, 16, 0.1); opacity: 0; z-index: 2000; pointer-events: none; animation: flicker 0.15s infinite; }
+        @keyframes flicker { 0% { opacity: 0.27861; } 50% { opacity: 0.11287; } 100% { opacity: 0.35123; } }
+
         #desktop { width: 100%; height: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); grid-auto-rows: min-content; padding: 40px; gap: 30px; box-sizing: border-box; position: relative; z-index: 10; }
         .hacker-icon { background: none; border: 1px solid transparent; color: var(--main); cursor: pointer; display: flex; flex-direction: column; align-items: center; width: 100px; padding: 12px; transition: 0.3s; }
         .hacker-icon:hover { border: 1px dashed var(--main); background: rgba(0,255,0,0.1); transform: scale(1.1); box-shadow: 0 0 15px var(--main); }
-        .emoji { font-size: 45px; margin-bottom: 8px; }
-        .label { font-size: 11px; font-weight: bold; text-align: center; text-transform: uppercase; }
+        .emoji { font-size: 45px; margin-bottom: 8px; filter: drop-shadow(0 0 5px var(--main)); }
+        .label { font-size: 11px; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
         
-        .window { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.95); border: 2px solid var(--main); z-index: 100; width: 520px; box-shadow: 0 0 80px rgba(0,255,0,0.2); }
+        .window { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.95); border: 2px solid var(--main); z-index: 100; width: 520px; box-shadow: 0 0 80px rgba(0,255,0,0.2); backdrop-filter: blur(5px); }
         .win-header { background: var(--main); color: #000; font-weight: bold; padding: 10px; font-size: 13px; display: flex; justify-content: space-between; }
         .win-content { padding: 20px; }
         .hidden { display: none !important; }
         
-        .exe-btn { background: var(--main); color: #000; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 12px; font-family: 'Courier New'; }
-        input { background: #000; border: 1px solid var(--main); color: var(--main); padding: 12px; width: 100%; box-sizing: border-box; outline: none; font-family: 'Courier New'; }
+        .exe-btn { background: var(--main); color: #000; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 12px; font-family: 'Courier New'; transition: 0.2s; }
+        .exe-btn:hover { background: #fff; box-shadow: 0 0 20px var(--main); }
         
-        #terminal-output { height: 180px; overflow-y: auto; border: 1px solid #040; background: rgba(0,5,0,0.9); padding: 12px; font-size: 12px; margin-top: 12px; line-height: 1.5; }
+        input { background: #000; border: 1px solid var(--main); color: var(--main); padding: 12px; width: 100%; box-sizing: border-box; outline: none; font-family: 'Courier New'; font-size: 14px; }
+        
+        #terminal-output { height: 180px; overflow-y: auto; border: 1px solid #040; background: rgba(0,5,0,0.9); padding: 12px; font-size: 12px; margin-top: 12px; line-height: 1.5; border-radius: 4px; }
         
         /* FATURA TASARIMI */
         .invoice-paper { background: #fdfdfd; color: #111; padding: 35px; border: 1px solid #ccc; font-family: 'Courier New', serif; position: relative; box-shadow: 10px 10px 0px rgba(0,255,0,0.2); }
-        .stamp { position: absolute; top: 20px; right: 20px; border: 5px double #d00; color: #d00; padding: 5px; transform: rotate(15deg); font-weight: 900; }
+        .stamp { position: absolute; top: 20px; right: 20px; border: 5px double #d00; color: #d00; padding: 5px; transform: rotate(15deg); font-weight: 900; font-size: 20px; opacity: 0.7; }
 
-        #chat-box { height: 150px; overflow-y: auto; border: 1px solid #222; padding: 10px; background: #050505; }
-        .msg-op { color: var(--cyan); margin-bottom: 8px; font-weight: bold; }
-        .msg-user { color: var(--main); margin-bottom: 8px; text-align: right; }
+        #chat-box { height: 160px; overflow-y: auto; border: 1px solid #222; padding: 15px; background: #050505; border-radius: 4px; margin-bottom: 10px; }
+        .msg-op { color: var(--cyan); margin-bottom: 10px; border-left: 3px solid var(--cyan); padding-left: 10px; font-weight: bold; }
+        .msg-user { color: var(--main); margin-bottom: 10px; text-align: right; font-weight: bold; }
+
+        .glitch-effect { animation: ghost-glitch 0.3s cubic-bezier(.25,.46,.45,.94) both; }
+        @keyframes ghost-glitch { 0% { transform: translate(0); } 20% { transform: translate(-5px, 5px); } 40% { transform: translate(-5px, -5px); } 60% { transform: translate(5px, 5px); } 80% { transform: translate(5px, -5px); } 100% { transform: translate(0); } }
     </style>
 </head>
 <body id="main-body">
@@ -48,16 +55,16 @@
     </div>
 
     <div id="terminal-window" class="window hidden">
-        <div class="win-header"><span>[ALP_TERMINAL_V40]</span><span style="cursor:pointer" onclick="closeWin('terminal-window')">X</span></div>
+        <div class="win-header"><span>[ALP_TERMINAL_V40_STABLE]</span><span style="cursor:pointer" onclick="closeWin('terminal-window')">X</span></div>
         <div class="win-content">
-            <div style="font-size:10px; color:var(--cyan); text-align:center; margin-bottom:5px;">
+            <div style="font-size:10px; color:var(--cyan); text-align:center; margin-bottom:8px; border-bottom: 1px solid #030; padding-bottom:5px;">
                 <span onclick="openAbout()" style="cursor:pointer">HAKKIMIZDA</span> | 
                 <span onclick="openSponsor()" style="cursor:pointer">SPONSOR</span> | 
                 SYSTEM_INFO
             </div>
             <input type="text" id="ai-input" placeholder="Gölge Operatör emir bekliyor..." onkeypress="if(event.key==='Enter') runLogic()">
-            <button class="exe-btn" onclick="runLogic()">EXECUTE</button>
-            <div id="terminal-output">>> Sistem Alp Master kontrolünde. Her şey geri getirildi.</div>
+            <button class="exe-btn" onclick="runLogic()">EXECUTE COMMAND</button>
+            <div id="terminal-output">>> Sistem Alp Master kontrolünde. Köprü aktif.</div>
         </div>
     </div>
 
@@ -70,8 +77,9 @@
                 <br>-------------------------------------<br>
                 Müşteri: Alp Ekin (Master)<br>
                 Ürün: 1x Pusu Karışık Pizza<br>
-                Ekstra: Çorlu Usulü Şalgam (Pusuya Dahil Değil)<br>
+                Ekstra: Çorlu Usulü Şalgam<br>
                 Tutar: 1000.49 TL<br>
+                Durum: Mühürlendi<br>
                 -------------------------------------<br>
                 <small>Not: Sessizlik en iyi pusudur.</small>
             </div>
@@ -81,24 +89,26 @@
     <div id="mail-window" class="window hidden">
         <div class="win-header"><span>[GÖLGE_OPERATÖR_MAIL]</span><span style="cursor:pointer" onclick="closeWin('mail-window')">X</span></div>
         <div class="win-content">
-            <div id="chat-box"><div class="msg-op">GÖLGE OPERATÖR: Master, siber cephanelik hazır.</div></div>
-            <input type="text" id="mail-input" placeholder="Operatöre yaz..." onkeypress="if(event.key==='Enter') sendMail()">
-            <button class="exe-btn" onclick="sendMail()">GÖNDER</button>
+            <div id="chat-box"><div class="msg-op">GÖLGE OPERATÖR: Master, siber cephanelik geri getirildi.</div></div>
+            <input type="text" id="mail-input" placeholder="Operatöre talimat ver..." onkeypress="if(event.key==='Enter') sendMail()">
+            <button class="exe-btn" onclick="sendMail()">GÜVENLİ İLETİ</button>
         </div>
     </div>
 
     <div id="sabir-window" class="window hidden">
-        <div class="win-header"><span>[GITHUB_DECRYPTOR]</span></div>
+        <div class="win-header"><span>[GITHUB_DECRYPTOR_CORE]</span></div>
         <div class="win-content">
-            <div style="width:100%; height:20px; border:1px solid var(--main); position:relative;">
+            <div style="width:100%; height:30px; border:2px solid var(--main); position:relative; overflow:hidden;">
                 <div id="s-bar" style="width:0%; height:100%; background:var(--main);"></div>
+                <div id="s-timer" style="position:absolute; width:100%; text-align:center; line-height:30px; font-weight:bold; color:#fff; mix-blend-mode:difference;">60s</div>
             </div>
-            <p id="s-timer" style="text-align:center;">60s</p>
+            <p style="font-size:10px; text-align:center; margin-top:10px; color:#555;">Github veritabanı deşifre ediliyor...</p>
         </div>
     </div>
 
     <script>
         const API_URL = "http://localhost:5000/chat";
+        let isSabirRunning = false;
 
         function openWin(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeWin(id) { document.getElementById(id).classList.add('hidden'); }
@@ -109,16 +119,19 @@
             o.scrollTop = o.scrollHeight;
         }
 
-        async function getAI(msg) {
+        // BEYİN ENTEGRASYONU (PYTHON KÖPRÜSÜ)
+        async function getAIResponse(userMessage) {
             try {
-                const res = await fetch(API_URL, {
+                const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: msg })
+                    body: JSON.stringify({ message: userMessage })
                 });
-                const data = await res.json();
+                const data = await response.json();
                 return data.response;
-            } catch (e) { return "HATA: Python (Beyin) kapalı!"; }
+            } catch (error) {
+                return "ERİŞİM HATASI: Python Beyni Kapalı!";
+            }
         }
 
         async function runLogic() {
@@ -128,10 +141,11 @@
             inp.value = "";
             logToTerm("USER: " + val, "#888");
 
-            if(val === "HAKKIMIZDA") openAbout();
-            else if(val === "SPONSOR") openSponsor();
+            if(val === "HAKKIMIZDA") { openAbout(); }
+            else if(val === "SPONSOR") { openSponsor(); }
+            else if(val === "SYSTEM_INFO") { logToTerm("CPU: %100 | BEYİN: GEMMA 2B | KONUM: ÇORLU", "var(--cyan)"); }
             else {
-                const reply = await getAI(val);
+                const reply = await getAIResponse(val);
                 logToTerm("GÖLGE OPERATÖR: " + reply, "var(--cyan)");
             }
         }
@@ -142,12 +156,13 @@
             if(!val) return;
             document.getElementById('chat-box').innerHTML += `<div class="msg-user">Sen: ${val}</div>`;
             inp.value = "";
-            const reply = await getAI(val);
+            const reply = await getAIResponse(val);
             document.getElementById('chat-box').innerHTML += `<div class="msg-op">GÖLGE OPERATÖR: ${reply}</div>`;
+            document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
         }
 
         function openAntivirus() {
-            alert("VİRÜS TESPİT EDİLDİ! TEMİZLENİYOR...");
+            alert("VİRÜS TESPİT EDİLDİ! RICK_PROTECTION DEVREDE...");
             window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank");
         }
 
@@ -157,11 +172,13 @@
         }
 
         function openAbout() {
-            alert("ALP MASTER V4.0\n----------------\nGeliştirici: Alp Ekin\nŞehir: Çorlu\nBeyin: Gemma 2B (Ollama)\nDurum: Pusu Aktif");
+            alert("ALP MASTER V4.0 - FULL RESTORE\n----------------\nGeliştirici: Alp Ekin\nŞehir: Çorlu\nYapı: HTML/Python/Gemma 2B\nPusu Durumu: %100 Hazır");
         }
 
         function startSabir() {
+            if(isSabirRunning) return;
             openWin('sabir-window');
+            isSabirRunning = true;
             let sec = 60;
             let t = setInterval(() => {
                 sec--;
@@ -169,7 +186,8 @@
                 document.getElementById('s-timer').innerText = sec + "s";
                 if(sec <= 0) {
                     clearInterval(t);
-                    logToTerm("DEŞİFRE TAMAMLANDI Master.", "var(--gold)");
+                    isSabirRunning = false;
+                    logToTerm("GÖLGE OPERATÖR: GitHub deşifre tamam.", "var(--gold)");
                     closeWin('sabir-window');
                 }
             }, 1000);
