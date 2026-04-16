@@ -31,7 +31,6 @@
         
         #terminal-output { height: 180px; overflow-y: auto; border: 1px solid #040; background: rgba(0,5,0,0.9); padding: 12px; font-size: 12px; margin-top: 12px; line-height: 1.5; border-radius: 4px; }
         
-        /* FATURA TASARIMI */
         .invoice-paper { background: #fdfdfd; color: #111; padding: 35px; border: 1px solid #ccc; font-family: 'Courier New', serif; position: relative; box-shadow: 10px 10px 0px rgba(0,255,0,0.2); }
         .stamp { position: absolute; top: 20px; right: 20px; border: 5px double #d00; color: #d00; padding: 5px; transform: rotate(15deg); font-weight: 900; font-size: 20px; opacity: 0.7; }
 
@@ -41,6 +40,10 @@
 
         .glitch-effect { animation: ghost-glitch 0.3s cubic-bezier(.25,.46,.45,.94) both; }
         @keyframes ghost-glitch { 0% { transform: translate(0); } 20% { transform: translate(-5px, 5px); } 40% { transform: translate(-5px, -5px); } 60% { transform: translate(5px, 5px); } 80% { transform: translate(5px, -5px); } 100% { transform: translate(0); } }
+
+        /* OYUN ALANI STİLLERİ */
+        #game-area { width: 100%; height: 250px; background: #050505; border: 1px solid var(--main); position: relative; overflow: hidden; cursor: crosshair; }
+        #stickman { position: absolute; bottom: 10px; left: 50%; font-size: 40px; transition: 0.1s; pointer-events: none; }
     </style>
 </head>
 <body id="main-body">
@@ -51,8 +54,21 @@
         <button class="hacker-icon" onclick="openWin('terminal-window')"><span class="emoji">📟</span><span class="label">AI_CORE_X</span></button>
         <button class="hacker-icon" onclick="openWin('pizza-window')"><span class="emoji">🍕</span><span class="label">PIZZA_HUB</span></button>
         <button class="hacker-icon" onclick="startFnafPusu()"><span class="emoji">🐻</span><span class="label" style="color:#f00">FREE_FNAF</span></button>
+        <button class="hacker-icon" onclick="openWin('win-brick-game')"><span class="emoji">🧱</span><span class="label">TUĞLA_ATAR</span></button>
         <button class="hacker-icon" onclick="openAntivirus()"><span class="emoji">🛡️</span><span class="label">SECURE_G</span></button>
         <button class="hacker-icon" onclick="startSabir()"><span class="emoji">⚠️</span><span class="label">SABIR.EXE</span></button>
+    </div>
+
+    <div id="win-brick-game" class="window hidden">
+        <div class="win-header"><span>[BRICK_STRIKE_V1.0]</span><span style="cursor:pointer" onclick="closeWin('win-brick-game')">X</span></div>
+        <div class="win-content">
+            <div id="game-area" onclick="throwBrick(event)">
+                <div id="stickman">🏃</div>
+                <div id="score-board" style="position: absolute; top: 10px; left: 10px; font-weight: bold; color: var(--gold);">SKOR: 0</div>
+            </div>
+            <p style="font-size: 10px; text-align: center; color: var(--main);">Çöp adama tuğla fırlatmak için tıkla!</p>
+            <button class="exe-btn" onclick="resetBrickGame()">YENİDEN BAŞLAT</button>
+        </div>
     </div>
 
     <div id="terminal-window" class="window hidden">
@@ -110,6 +126,7 @@
     <script>
         const API_URL = "http://localhost:5000/chat";
         let isSabirRunning = false;
+        let brickScore = 0;
 
         function openWin(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeWin(id) { document.getElementById(id).classList.add('hidden'); }
@@ -120,7 +137,6 @@
             o.scrollTop = o.scrollHeight;
         }
 
-        // BEYİN ENTEGRASYONU (PYTHON KÖPRÜSÜ)
         async function getAIResponse(userMessage) {
             try {
                 const response = await fetch(API_URL, {
@@ -194,12 +210,52 @@
             }, 1000);
         }
 
-        // YENİ PUSU FONKSİYONU
         function startFnafPusu() {
             alert("GÖLGE OPERATÖR: Bedava FNAF indiriliyor... Hacının Şalgamı sponsorluğunda.");
             setTimeout(() => {
                 window.open("https://youtu.be/r11mz5jvHaU?si=GM_B-4s7ZfqsIu-j", "_blank");
             }, 500);
+        }
+
+        // --- TUĞLA OYUNU MANTIĞI ---
+        const stickman = document.getElementById('stickman');
+        setInterval(() => {
+            let randomX = Math.random() * 85;
+            stickman.style.left = randomX + "%";
+        }, 800);
+
+        function throwBrick(e) {
+            const rect = document.getElementById('game-area').getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const brick = document.createElement('div');
+            brick.innerText = "🧱";
+            brick.style.position = "absolute";
+            brick.style.left = (x - 10) + "px";
+            brick.style.top = (y - 10) + "px";
+            brick.style.pointerEvents = "none";
+            document.getElementById('game-area').appendChild(brick);
+
+            const sRect = stickman.getBoundingClientRect();
+            const bRect = brick.getBoundingClientRect();
+
+            if (bRect.left < sRect.right && bRect.right > sRect.left && bRect.top < sRect.bottom && bRect.bottom > sRect.top) {
+                brickScore++;
+                document.getElementById('score-board').innerText = "SKOR: " + brickScore;
+                stickman.innerText = "😵";
+                logToTerm("GÖLGE OPERATÖR: Tam isabet Master!", "var(--main)");
+                setTimeout(() => { stickman.innerText = "🏃"; }, 400);
+            } else {
+                logToTerm("GÖLGE OPERATÖR: Iskalladın sjsjsjsj.", "var(--blood)");
+            }
+            setTimeout(() => { brick.remove(); }, 300);
+        }
+
+        function resetBrickGame() {
+            brickScore = 0;
+            document.getElementById('score-board').innerText = "SKOR: 0";
+            logToTerm("GÖLGE OPERATÖR: Oyun sıfırlandı.", "var(--cyan)");
         }
     </script>
 </body>
