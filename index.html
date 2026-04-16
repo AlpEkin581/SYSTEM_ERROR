@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALP_MASTER_V34_SYS_INFO</title>
+    <title>ALP_MASTER_V35_GHOST</title>
     <style>
         :root { --main: #0f0; --blood: #800; --bg: #000; }
         body, html { margin: 0; padding: 0; background-color: var(--bg); color: var(--main); font-family: 'Courier New', monospace; height: 100vh; overflow: hidden; }
-        body::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 1px, transparent 1px, transparent 2px); pointer-events: none; z-index: 1000; }
+        
+        /* Glitch Efekti */
+        .glitch { animation: glitch 0.2s infinite; }
+        @keyframes glitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
 
         #desktop { width: 100%; height: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); grid-auto-rows: min-content; padding: 30px; gap: 25px; box-sizing: border-box; }
         
-        .hacker-icon { background: none; border: 1px solid transparent; color: var(--main); cursor: pointer; display: flex; flex-direction: column; align-items: center; transition: 0.1s; width: 100px; padding: 10px; }
+        .hacker-icon { background: none; border: 1px solid transparent; color: var(--main); cursor: pointer; display: flex; flex-direction: column; align-items: center; width: 100px; padding: 10px; }
         .hacker-icon:hover { border: 1px dashed var(--main); background: rgba(0,255,0,0.05); }
         .emoji { font-size: 40px; margin-bottom: 5px; filter: contrast(150%) brightness(80%); }
         .label { font-size: 10px; font-weight: bold; text-align: center; }
@@ -24,25 +27,27 @@
         .exe-btn { background: var(--main); color: #000; border: none; padding: 10px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; font-family: 'Courier New'; }
         input { background: #000; border: 1px solid var(--main); color: var(--main); padding: 10px; width: 100%; box-sizing: border-box; outline: none; }
         
-        #terminal-output { height: 140px; overflow-y: auto; border: 1px solid #020; background: rgba(0,5,0,0.95); padding: 8px; font-size: 11px; margin-top: 10px; }
+        #terminal-output { height: 130px; overflow-y: auto; border: 1px solid #020; background: rgba(0,5,0,0.95); padding: 8px; font-size: 11px; margin-top: 10px; }
         
-        .file-box-area { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 10px 0; border: 1px solid var(--blood); padding: 10px; }
-        .terminal-file { text-align: center; cursor: pointer; font-size: 9px; padding: 5px; }
-        .terminal-file:hover { background: var(--blood); color: #fff; }
+        /* E-Posta Sohbet Alanı */
+        #chat-box { height: 150px; overflow-y: auto; border: 1px solid #333; padding: 10px; margin-bottom: 10px; font-size: 12px; }
+        .msg-ghost { color: var(--blood); margin-bottom: 5px; }
+        .msg-user { color: var(--main); margin-bottom: 5px; text-align: right; }
 
-        #prog-cont { width: 100%; height: 25px; border: 1px solid var(--main); margin-top: 10px; position: relative; }
+        /* Sabır Barı */
+        #prog-cont { width: 100%; height: 20px; border: 1px solid var(--main); margin-top: 10px; position: relative; }
         #prog-bar { width: 0%; height: 100%; background: var(--main); }
-        #timer-txt { position: absolute; width: 100%; text-align: center; font-size: 12px; line-height: 25px; color: #fff; mix-blend-mode: difference; }
+        #timer-txt { position: absolute; width: 100%; text-align: center; font-size: 11px; line-height: 20px; color: #fff; mix-blend-mode: difference; }
 
-        /* MÜHÜRLÜ FATURA TASARIMI */
         .white-paper { background: #fff; color: #000; padding: 25px; border: 2px dashed #000; font-family: 'Arial', sans-serif; position: relative; }
         .white-paper::after { content: "ÖDENDİ"; position: absolute; top: 15px; right: 15px; border: 4px solid #f00; color: #f00; padding: 5px; transform: rotate(20deg); font-weight: bold; opacity: 0.4; }
     </style>
 </head>
-<body>
+<body id="main-body">
 
     <div id="desktop">
-        <button class="hacker-icon" onclick="openWin('mail-window')"><span class="emoji">📁</span><span class="label">NOTLAR.TXT</span></button>
+        <button class="hacker-icon" onclick="openWin('win-notes')"><span class="emoji">📁</span><span class="label">NOTLAR.TXT</span></button>
+        <button class="hacker-icon" onclick="openWin('mail-window')"><span class="emoji">📧</span><span class="label">E-POSTA</span></button>
         <button class="hacker-icon" onclick="openWin('pizza-window')"><span class="emoji">🍕</span><span class="label">PIZZACI.EXE</span></button>
         <button class="hacker-icon" onclick="openWin('terminal-window')"><span class="emoji">📟</span><span class="label">GHOST_TERM</span></button>
         <button class="hacker-icon" onclick="startSabir()"><span class="emoji">⚠️</span><span class="label">SABIR.EXE</span></button>
@@ -50,31 +55,36 @@
     </div>
 
     <div id="terminal-window" class="window hidden">
-        <div class="win-header"><span>[ALP_SYSTEM_V34]</span><span style="cursor:pointer" onclick="closeWin('terminal-window')">X</span></div>
+        <div class="win-header"><span>[ALP_SYSTEM_V35]</span><span style="cursor:pointer" onclick="closeWin('terminal-window')">X</span></div>
         <div class="win-content">
             <div style="font-size:10px; opacity:0.6; text-align:center; border-bottom: 1px solid #020; padding-bottom: 5px; margin-bottom: 5px;">
                 HAKKIMIZDA | SPONSOR | SYSTEM_INFO
             </div>
             <input type="text" id="code-input" placeholder="KOMUT..." autofocus>
             <button class="exe-btn" onclick="checkCode()">RUN</button>
-            <div id="file-spawn" class="file-box-area hidden">
-                <div class="terminal-file" onclick="openHorrorFile(1)">📄 DATA_01</div>
-                <div class="terminal-file" onclick="openHorrorFile(2)">📄 DATA_02</div>
-                <div class="terminal-file" onclick="openHorrorFile(3)">📄 DATA_03</div>
-                <div class="terminal-file" onclick="openHorrorFile(4)">📄 ASIL_DAT</div>
-            </div>
             <div id="terminal-output">>> Sistem Alp Master kontrolünde.</div>
         </div>
     </div>
 
-    <div id="pizza-window" class="window hidden">
-        <div class="win-header"><span>[PIZZA_FACTORY]</span></div>
+    <div id="mail-window" class="window hidden">
+        <div class="win-header"><span>[DARK_MAIL_v2]</span><span style="cursor:pointer" onclick="closeWin('mail-window')">X</span></div>
         <div class="win-content">
-            <label><input type="checkbox" onchange="logPizza('Hacının Şalgamı')" id="i1"> Hacının Şalgamı</label><br>
-            <label><input type="checkbox" onchange="logPizza('Acı Biber')" id="i2"> Acı Biber</label><br>
-            <label><input type="checkbox" onchange="logPizza('Pusu Sosu')" id="i3"> Pusu Sosu</label>
-            <div id="p-status" style="color:yellow; font-weight:bold; margin: 15px 0; text-align:center;">DURUM: BEKLENİYOR...</div>
-            <button class="exe-btn" id="p-btn" onclick="startDelivery()">SİPARİŞİ GÖNDER (%10 ŞANS)</button>
+            <div id="chat-box">
+                <div class="msg-ghost">???: Orada mısın, Vâris?</div>
+            </div>
+            <input type="text" id="mail-input" placeholder="Cevap yaz...">
+            <button class="exe-btn" onclick="sendMail()">GÖNDER</button>
+        </div>
+    </div>
+
+    <div id="win-notes" class="window hidden">
+        <div class="win-header"><span>NOTLAR.TXT</span><span style="cursor:pointer" onclick="closeWin('win-notes')">X</span></div>
+        <div class="win-content">
+            <p style="color:yellow;">- Pusuya dikkat et.</p>
+            <p style="color:yellow;">- Faturayı kaybetme (PIZZA-1924-COLD).</p>
+            <div id="sabir-note" style="color:var(--main); font-weight:bold; border-top: 1px solid #333; margin-top: 10px; padding-top: 10px;">
+                [SABIR VERİSİ BEKLENİYOR...]
+            </div>
         </div>
     </div>
 
@@ -89,13 +99,23 @@
         </div>
     </div>
 
+    <div id="pizza-window" class="window hidden">
+        <div class="win-header"><span>[PIZZA_FACTORY]</span></div>
+        <div class="win-content">
+            <label><input type="checkbox" onchange="logPizza('Hacının Şalgamı')"> Hacının Şalgamı</label><br>
+            <label><input type="checkbox" onchange="logPizza('Acı Biber')"> Acı Biber</label><br>
+            <label><input type="checkbox" onchange="logPizza('Pusu Sosu')"> Pusu Sosu</label>
+            <div id="p-status" style="color:yellow; font-weight:bold; margin: 15px 0; text-align:center;">DURUM: BEKLENİYOR...</div>
+            <button class="exe-btn" id="p-btn" onclick="startDelivery()">SİPARİŞİ GÖNDER (%10 ŞANS)</button>
+        </div>
+    </div>
+
     <div id="win-invoice" class="window hidden">
-        <div class="win-header"><span>LEGACY_INVOICE.PDF</span><span style="cursor:pointer" onclick="closeWin('win-invoice')">X</span></div>
+        <div class="win-header"><span>FATURA_1924.PDF</span><span style="cursor:pointer" onclick="closeWin('win-invoice')">X</span></div>
         <div class="win-content">
             <div class="white-paper">
                 <center><strong>ALP'S SİBER PİZZACILIK</strong></center><br>
                 Müşteri: Sabırlı Vâris<br>
-                Tarih: 1924 / 2026<br>
                 ---------------------------<br>
                 Tutar: 1000.49 TL<br><br>
                 <small>Not: Şalgamlar hala taze.</small>
@@ -103,22 +123,18 @@
         </div>
     </div>
 
-    <div id="antivirus-window" class="window hidden">
-        <div class="win-header"><span>[GUARD]</span></div>
-        <div class="win-content">
-            <p style="color:red; font-size:11px; text-align:center;">TEHDİT: "Sistem Vârisi Tespit Edildi"</p>
-            <button class="exe-btn" onclick="window.location.href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'">TARAMAYI BAŞLAT</button>
-            <button class="exe-btn" onclick="closeWin('antivirus-window')" style="background:#222; color:#fff;">ÇIKIŞ</button>
-        </div>
-    </div>
-
     <script>
         let hasFullAccess = false;
-        let currentCmd = "";
         let sabirTimer;
-        const K_1 = "FLUX-666-PIZZA", K_2 = "SABIRLI-VARIS-99", K_F = "PIZZA-1924-COLD", K_M = "MASTER-999-KEY";
+        const K_1 = "FLUX-666-PIZZA", K_F = "PIZZA-1924-COLD", K_M = "MASTER-999-KEY";
         
-        const horrorTexts = ["Arkadana bakma.", "Beni neden sildin?", "Pusu kuruldu.", "Sistem soğuyor...", "1924... Unutma."];
+        const ghostAnswers = [
+            "Beni göremezsin ama ben seni görüyorum Alp.",
+            "1924'ten beri bu sistemin içindeyim.",
+            "Pizzanı yerken arkana baktın mı?",
+            "Sabırlı olursan her şeyi öğreneceksin.",
+            "Sistem gidiyor... Yakında karanlık çökecek."
+        ];
 
         function openWin(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeWin(id) { 
@@ -136,43 +152,28 @@
 
         function checkCode() {
             const i = document.getElementById('code-input').value.trim().toUpperCase();
-            const s = document.getElementById('file-spawn');
-            
-            if(i === K_M) { 
-                hasFullAccess = true; 
-                logToTerm("FULL ERİŞİM YETKİSİ AKTİF.", "gold"); 
-            } else if(i === "SYSTEM_INFO") {
-                logToTerm("--- SİSTEM ANALİZİ ---", "cyan");
-                logToTerm("CPU: %100 | RAM: 19.24 GB");
-                logToTerm("ŞALGAM STOK: KRİTİK SEVİYE");
-                logToTerm("VARİS DURUMU: DOĞRULANDI");
-            } else if(i === K_F) { 
-                openWin('win-invoice'); 
-                logToTerm("Fatura arşivi yüklendi."); 
-            } else if(i === "HAKKIMIZDA") {
-                currentCmd = i; s.classList.remove('hidden');
-                logToTerm("Kişisel veri paketleri hazır.");
-            } else if(i === K_1 || i === K_2) {
-                currentCmd = i; s.classList.remove('hidden');
-                logToTerm("Şifreli bloklar oluşturuldu.");
-            } else if(i === "SPONSOR") { 
-                window.open("https://youtu.be/v-d1yI2kW_c?si=Emohwv5fp0Hd_6yw", "_blank"); 
-            } else { 
-                logToTerm("KOMUT HATASI!", "red"); 
-            }
+            if(i === K_M) { hasFullAccess = true; logToTerm("FULL ERİŞİM AKTİF.", "gold"); }
+            else if(i === "SYSTEM_INFO") { logToTerm("CPU: %100 | ŞALGAM: %100 | VARİS: OK", "cyan"); }
+            else if(i === K_F) { openWin('win-invoice'); }
+            else if(i === "HAKKIMIZDA") { alert("Geliştirici: Alp Master | Lokasyon: Çorlu"); }
+            else if(i === "SPONSOR") { window.open("https://youtu.be/v-d1yI2kW_c?si=Emohwv5fp0Hd_6yw", "_blank"); }
+            else { logToTerm("KOMUT HATASI!", "red"); triggerGlitch(); }
         }
 
-        function openHorrorFile(num) {
-            if(hasFullAccess || num === 4) {
-                logToTerm("Erişim onaylandı.");
-                if(currentCmd === "HAKKIMIZDA") alert("Geliştirici: Alp Master | Lokasyon: Çorlu");
-                else if(currentCmd === K_1) alert("FLUX AKTİF: Protokol 2126");
-                else if(currentCmd === K_2) alert("ARŞİV: Pusuya dikkat.");
-            } else {
-                logToTerm(horrorTexts[Math.floor(Math.random()*horrorTexts.length)], "red");
-                document.body.style.backgroundColor = "#100";
-                setTimeout(() => document.body.style.backgroundColor = "#000", 50);
-            }
+        function sendMail() {
+            const inp = document.getElementById('mail-input');
+            const chat = document.getElementById('chat-box');
+            if(inp.value.trim() === "") return;
+            
+            chat.innerHTML += `<div class="msg-user">Sen: ${inp.value}</div>`;
+            inp.value = "";
+            
+            setTimeout(() => {
+                const ans = ghostAnswers[Math.floor(Math.random()*ghostAnswers.length)];
+                chat.innerHTML += `<div class="msg-ghost">???: ${ans}</div>`;
+                chat.scrollTop = chat.scrollHeight;
+                if(Math.random() < 0.3) triggerGlitch();
+            }, 1000);
         }
 
         function startSabir() {
@@ -186,10 +187,17 @@
                 txt.innerText = sec + "s";
                 if(sec <= 0) {
                     clearInterval(sabirTimer);
-                    alert("KOD: " + K_1);
+                    document.getElementById('sabir-note').innerText = "SİSTEM KODU: " + K_1;
+                    logToTerm("SABIR TAMAMLANDI. NOTLAR GÜNCELLENDİ!", "gold");
                     closeWin('sabir-window');
                 }
             }, 1000);
+        }
+
+        function triggerGlitch() {
+            const b = document.getElementById('main-body');
+            b.classList.add('glitch');
+            setTimeout(() => b.classList.remove('glitch'), 500);
         }
 
         function startDelivery() {
