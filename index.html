@@ -3,222 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALP_MASTER_V35_GHOST</title>
+    <title>ALP_MASTER_V40_FULL_RESTORE</title>
     <style>
-        :root { --main: #0f0; --blood: #800; --bg: #000; }
+        :root { --main: #0f0; --blood: #800; --bg: #000; --cyan: #0ff; --gold: #ffd700; }
         body, html { margin: 0; padding: 0; background-color: var(--bg); color: var(--main); font-family: 'Courier New', monospace; height: 100vh; overflow: hidden; }
         
-        /* Glitch Efekti */
-        .glitch { animation: glitch 0.2s infinite; }
-        @keyframes glitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
+        /* CRT Ekran Efekti */
+        body::before { content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); z-index: 2000; background-size: 100% 2px, 3px 100%; pointer-events: none; }
+        body::after { content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background: rgba(18, 16, 16, 0.1); opacity: 0; z-index: 2000; pointer-events: none; animation: flicker 0.15s infinite; }
+        @keyframes flicker { 0% { opacity: 0.27861; } 50% { opacity: 0.11287; } 100% { opacity: 0.35123; } }
 
-        #desktop { width: 100%; height: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); grid-auto-rows: min-content; padding: 30px; gap: 25px; box-sizing: border-box; }
+        #desktop { width: 100%; height: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); grid-auto-rows: min-content; padding: 40px; gap: 30px; box-sizing: border-box; position: relative; z-index: 10; }
         
-        .hacker-icon { background: none; border: 1px solid transparent; color: var(--main); cursor: pointer; display: flex; flex-direction: column; align-items: center; width: 100px; padding: 10px; }
-        .hacker-icon:hover { border: 1px dashed var(--main); background: rgba(0,255,0,0.05); }
-        .emoji { font-size: 40px; margin-bottom: 5px; filter: contrast(150%) brightness(80%); }
-        .label { font-size: 10px; font-weight: bold; text-align: center; }
+        .hacker-icon { background: none; border: 1px solid transparent; color: var(--main); cursor: pointer; display: flex; flex-direction: column; align-items: center; width: 100px; padding: 12px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .hacker-icon:hover { border: 1px dashed var(--main); background: rgba(0,255,0,0.1); transform: scale(1.1) rotate(2deg); box-shadow: 0 0 15px var(--main); }
+        .emoji { font-size: 45px; margin-bottom: 8px; filter: drop-shadow(0 0 5px var(--main)); }
+        .label { font-size: 11px; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
         
-        .window { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #000; border: 1px solid var(--main); z-index: 100; width: 480px; box-shadow: 0 0 40px #000; }
-        .win-header { background: var(--main); color: #000; font-weight: bold; padding: 5px 10px; font-size: 12px; display: flex; justify-content: space-between; }
-        .win-content { padding: 15px; }
+        .window { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.95); border: 2px solid var(--main); z-index: 100; width: 520px; box-shadow: 0 0 80px rgba(0,255,0,0.2), inset 0 0 10px rgba(0,255,0,0.1); backdrop-filter: blur(5px); }
+        .win-header { background: var(--main); color: #000; font-weight: bold; padding: 10px; font-size: 13px; display: flex; justify-content: space-between; border-bottom: 2px solid var(--main); }
+        .win-content { padding: 20px; }
         .hidden { display: none !important; }
         
-        .exe-btn { background: var(--main); color: #000; border: none; padding: 10px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; font-family: 'Courier New'; }
-        input { background: #000; border: 1px solid var(--main); color: var(--main); padding: 10px; width: 100%; box-sizing: border-box; outline: none; }
+        .exe-btn { background: var(--main); color: #000; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 12px; font-family: 'Courier New'; font-size: 14px; transition: 0.2s; }
+        .exe-btn:hover { background: #fff; box-shadow: 0 0 20px var(--main); }
         
-        #terminal-output { height: 130px; overflow-y: auto; border: 1px solid #020; background: rgba(0,5,0,0.95); padding: 8px; font-size: 11px; margin-top: 10px; }
+        input { background: #000; border: 1px solid var(--main); color: var(--main); padding: 12px; width: 100%; box-sizing: border-box; outline: none; font-family: 'Courier New'; font-size: 14px; box-shadow: inset 0 0 5px var(--main); }
         
-        /* E-Posta Sohbet Alanı */
-        #chat-box { height: 150px; overflow-y: auto; border: 1px solid #333; padding: 10px; margin-bottom: 10px; font-size: 12px; }
-        .msg-ghost { color: var(--blood); margin-bottom: 5px; }
-        .msg-user { color: var(--main); margin-bottom: 5px; text-align: right; }
+        #terminal-output { height: 180px; overflow-y: auto; border: 1px solid #040; background: rgba(0,5,0,0.9); padding: 12px; font-size: 12px; margin-top: 12px; line-height: 1.6; border-radius: 4px; }
+        
+        .file-spawn-area { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 15px 0; border: 1px solid var(--blood); padding: 12px; background: rgba(128,0,0,0.05); }
+        .file-item { text-align: center; cursor: pointer; font-size: 10px; padding: 8px; border: 1px solid transparent; }
+        .file-item:hover { border: 1px solid var(--blood); background: var(--blood); color: #fff; }
 
-        /* Sabır Barı */
-        #prog-cont { width: 100%; height: 20px; border: 1px solid var(--main); margin-top: 10px; position: relative; }
-        #prog-bar { width: 0%; height: 100%; background: var(--main); }
-        #timer-txt { position: absolute; width: 100%; text-align: center; font-size: 11px; line-height: 20px; color: #fff; mix-blend-mode: difference; }
+        #chat-box { height: 160px; overflow-y: auto; border: 1px solid #222; padding: 15px; margin-bottom: 12px; font-size: 13px; background: #050505; border-radius: 4px; }
+        .msg-ghost { color: #ff3333; margin-bottom: 10px; border-left: 3px solid #ff3333; padding-left: 10px; font-style: italic; text-shadow: 0 0 5px #f00; }
+        .msg-user { color: var(--main); margin-bottom: 10px; text-align: right; font-weight: bold; }
 
-        .white-paper { background: #fff; color: #000; padding: 25px; border: 2px dashed #000; font-family: 'Arial', sans-serif; position: relative; }
-        .white-paper::after { content: "ÖDENDİ"; position: absolute; top: 15px; right: 15px; border: 4px solid #f00; color: #f00; padding: 5px; transform: rotate(20deg); font-weight: bold; opacity: 0.4; }
+        /* FATURA GERÇEKÇİ TASARIM */
+        .invoice-paper { background: #fdfdfd; color: #111; padding: 35px; border: 1px solid #ccc; font-family: 'Courier New', serif; position: relative; box-shadow: 10px 10px 0px rgba(0,255,0,0.1); border-radius: 2px; }
+        .invoice-paper::before { content: ""; position: absolute; top: 20%; left: 10%; width: 80%; height: 60%; background: url('https://www.transparenttextures.com/patterns/old-paper.png'); opacity: 0.1; pointer-events: none; }
+        .stamp { position: absolute; top: 20px; right: 20px; border: 5px double #d00; color: #d00; padding: 10px; transform: rotate(15deg); font-weight: 900; font-size: 20px; opacity: 0.7; }
+        
+        .prog-cont { width: 100%; height: 30px; border: 2px solid var(--main); margin-top: 15px; position: relative; overflow: hidden; }
+        .prog-bar { width: 0%; height: 100%; background: var(--main); box-shadow: 0 0 20px var(--main); }
+        .prog-txt { position: absolute; width: 100%; text-align: center; line-height: 30px; font-weight: bold; color: #fff; mix-blend-mode: difference; }
+
+        .glitch-effect { animation: ghost-glitch 0.3s cubic-bezier(.25,.46,.45,.94) both; }
+        @keyframes ghost-glitch { 0% { transform: translate(0); } 20% { transform: translate(-5px, 5px); } 40% { transform: translate(-5px, -5px); } 60% { transform: translate(5px, 5px); } 80% { transform: translate(5px, -5px); } 100% { transform: translate(0); } }
     </style>
 </head>
 <body id="main-body">
 
     <div id="desktop">
-        <button class="hacker-icon" onclick="openWin('win-notes')"><span class="emoji">📁</span><span class="label">NOTLAR.TXT</span></button>
-        <button class="hacker-icon" onclick="openWin('mail-window')"><span class="emoji">📧</span><span class="label">E-POSTA</span></button>
-        <button class="hacker-icon" onclick="openWin('pizza-window')"><span class="emoji">🍕</span><span class="label">PIZZACI.EXE</span></button>
-        <button class="hacker-icon" onclick="openWin('terminal-window')"><span class="emoji">📟</span><span class="label">GHOST_TERM</span></button>
+        <button class="hacker-icon" onclick="openWin('win-notes')"><span class="emoji">📂</span><span class="label">BELLEK.DAT</span></button>
+        <button class="hacker-icon" onclick="openWin('mail-window')"><span class="emoji">📧</span><span class="label">DARK_MAIL</span></button>
+        <button class="hacker-icon" onclick="openWin('pizza-window')"><span class="emoji">🍕</span><span class="label">PIZZA_HUB</span></button>
+        <button class="hacker-icon" onclick="openWin('terminal-window')"><span class="emoji">📟</span><span class="label">AI_CORE_X</span></button>
         <button class="hacker-icon" onclick="startSabir()"><span class="emoji">⚠️</span><span class="label">SABIR.EXE</span></button>
-        <button class="hacker-icon" onclick="openWin('antivirus-window')"><span class="emoji">🛡️</span><span class="label">GUARD</span></button>
+        <button class="hacker-icon" onclick="openWin('antivirus-window')"><span class="emoji">🛡️</span><span class="label">SECURE_G</span></button>
     </div>
 
     <div id="terminal-window" class="window hidden">
-        <div class="win-header"><span>[ALP_SYSTEM_V35]</span><span style="cursor:pointer" onclick="closeWin('terminal-window')">X</span></div>
+        <div class="win-header"><span>[ALP_BRAIN_V40_STABLE]</span><span style="cursor:pointer" onclick="closeWin('terminal-window')">X</span></div>
         <div class="win-content">
-            <div style="font-size:10px; opacity:0.6; text-align:center; border-bottom: 1px solid #020; padding-bottom: 5px; margin-bottom: 5px;">
+            <div style="font-size:10px; color:var(--cyan); text-align:center; margin-bottom:8px; border-bottom: 1px solid #030; padding-bottom:5px;">
                 HAKKIMIZDA | SPONSOR | SYSTEM_INFO
             </div>
-            <input type="text" id="code-input" placeholder="KOMUT..." autofocus>
-            <button class="exe-btn" onclick="checkCode()">RUN</button>
-            <div id="terminal-output">>> Sistem Alp Master kontrolünde.</div>
+            <input type="text" id="ai-input" placeholder="Zeka ile konuşun veya komut girin..." onkeypress="if(event.key==='Enter') runLogic()">
+            <button class="exe-btn" onclick="runLogic()">EXECUTE</button>
+            <div id="file-spawn" class="file-spawn-area hidden">
+                <div class="file-item" onclick="openSecret(1)">📄 DATA_01</div>
+                <div class="file-item" onclick="openSecret(2)">📄 DATA_02</div>
+                <div class="file-item" onclick="openSecret(3)">📄 PUSU_LOG</div>
+                <div class="file-item" onclick="openSecret(4)">📄 ASIL_VERI</div>
+            </div>
+            <div id="terminal-output">>> Sistem Alp Master kontrolünde ayağa kalktı.</div>
         </div>
     </div>
 
     <div id="mail-window" class="window hidden">
-        <div class="win-header"><span>[DARK_MAIL_v2]</span><span style="cursor:pointer" onclick="closeWin('mail-window')">X</span></div>
+        <div class="win-header"><span>[???: SİSTEM_GELEN]</span><span style="cursor:pointer" onclick="closeWin('mail-window')">X</span></div>
         <div class="win-content">
-            <div id="chat-box">
-                <div class="msg-ghost">???: Orada mısın, Vâris?</div>
-            </div>
-            <input type="text" id="mail-input" placeholder="Cevap yaz...">
-            <button class="exe-btn" onclick="sendMail()">GÖNDER</button>
+            <div id="chat-box"><div class="msg-ghost">???: Her şeyi bildiğini mi sanıyorsun Alp?</div></div>
+            <input type="text" id="mail-input" placeholder="Ruhunla cevap ver..." onkeypress="if(event.key==='Enter') sendMail()">
+            <button class="exe-btn" onclick="sendMail()">SİNYALİ GÖNDER</button>
         </div>
     </div>
 
     <div id="win-notes" class="window hidden">
-        <div class="win-header"><span>NOTLAR.TXT</span><span style="cursor:pointer" onclick="closeWin('win-notes')">X</span></div>
+        <div class="win-header"><span>BELLEK_GUNCEL.TXT</span><span style="cursor:pointer" onclick="closeWin('win-notes')">X</span></div>
         <div class="win-content">
-            <p style="color:yellow;">- Pusuya dikkat et.</p>
-            <p style="color:yellow;">- Faturayı kaybetme (PIZZA-1924-COLD).</p>
-            <div id="sabir-note" style="color:var(--main); font-weight:bold; border-top: 1px solid #333; margin-top: 10px; padding-top: 10px;">
-                [SABIR VERİSİ BEKLENİYOR...]
+            <p style="color:var(--gold);">[ARŞİV] Fatura Kodu: PIZZA-1924-COLD</p>
+            <p style="color:var(--gold);">[HEDEF] Çorlu Hacker Grubu Operasyonu.</p>
+            <div id="sabir-data" style="color:var(--main); font-weight:bold; margin-top:20px; border-top: 1px solid #333; padding-top:10px;">[SABIR VERİSİ BEKLENİYOR]</div>
+        </div>
+    </div>
+
+    <div id="win-invoice" class="window hidden">
+        <div class="win-header"><span>LEGACY_FATURA_1924.PDF</span><span style="cursor:pointer" onclick="closeWin('win-invoice')">X</span></div>
+        <div class="win-content">
+            <div class="invoice-paper">
+                <div class="stamp">ÖDENDİ</div>
+                <center><strong style="font-size:18px;">ALP'S SİBER PİZZACILIK</strong><br><small>Kuruluş: 1924 / 2026</small></center>
+                <br>-------------------------------------<br>
+                Müşteri: Sabırlı Vâris (ALP)<br>
+                Hizmet: Sistem Güvenlik & Pizza<br>
+                Tutar: 1000.49 TL<br>
+                Durum: Mühürlendi<br>
+                -------------------------------------<br>
+                <small>Not: Şalgam pusuya dahil değildir.</small>
             </div>
         </div>
     </div>
 
     <div id="sabir-window" class="window hidden">
-        <div class="win-header"><span>[SABIR_PROTOKOLU]</span></div>
+        <div class="win-header"><span>[GITHUB_DECRYPTOR_CORE]</span></div>
         <div class="win-content">
-            <p style="font-size:11px;">Kod deşifre ediliyor... Bekle: 60s</p>
-            <div id="prog-cont">
-                <div id="prog-bar"></div>
-                <div id="timer-txt">60s</div>
-            </div>
-        </div>
-    </div>
-
-    <div id="pizza-window" class="window hidden">
-        <div class="win-header"><span>[PIZZA_FACTORY]</span></div>
-        <div class="win-content">
-            <label><input type="checkbox" onchange="logPizza('Hacının Şalgamı')"> Hacının Şalgamı</label><br>
-            <label><input type="checkbox" onchange="logPizza('Acı Biber')"> Acı Biber</label><br>
-            <label><input type="checkbox" onchange="logPizza('Pusu Sosu')"> Pusu Sosu</label>
-            <div id="p-status" style="color:yellow; font-weight:bold; margin: 15px 0; text-align:center;">DURUM: BEKLENİYOR...</div>
-            <button class="exe-btn" id="p-btn" onclick="startDelivery()">SİPARİŞİ GÖNDER (%10 ŞANS)</button>
-        </div>
-    </div>
-
-    <div id="win-invoice" class="window hidden">
-        <div class="win-header"><span>FATURA_1924.PDF</span><span style="cursor:pointer" onclick="closeWin('win-invoice')">X</span></div>
-        <div class="win-content">
-            <div class="white-paper">
-                <center><strong>ALP'S SİBER PİZZACILIK</strong></center><br>
-                Müşteri: Sabırlı Vâris<br>
-                ---------------------------<br>
-                Tutar: 1000.49 TL<br><br>
-                <small>Not: Şalgamlar hala taze.</small>
-            </div>
+            <div class="prog-cont"><div id="s-bar" class="prog-bar"></div><div id="s-timer" class="prog-txt">60s</div></div>
+            <p style="font-size:10px; text-align:center; margin-top:10px; color:#555;">Github veritabanı deşifre ediliyor...</p>
         </div>
     </div>
 
     <script>
-        let hasFullAccess = false;
-        let sabirTimer;
+        let isSabirRunning = false;
+        let lastCmd = "";
         const K_1 = "FLUX-666-PIZZA", K_F = "PIZZA-1924-COLD", K_M = "MASTER-999-KEY";
-        
-        const ghostAnswers = [
-            "Beni göremezsin ama ben seni görüyorum Alp.",
-            "1924'ten beri bu sistemin içindeyim.",
-            "Pizzanı yerken arkana baktın mı?",
-            "Sabırlı olursan her şeyi öğreneceksin.",
-            "Sistem gidiyor... Yakında karanlık çökecek."
-        ];
 
-        function openWin(id) { document.getElementById(id).classList.remove('hidden'); }
-        function closeWin(id) { 
-            document.getElementById(id).classList.add('hidden'); 
-            if(id === 'sabir-window') { clearInterval(sabirTimer); logToTerm("SABIR İPTAL EDİLDİ.", "red"); }
-        }
-
-        function logToTerm(m, c="#0f0") {
+        function logToTerm(m, c="var(--main)") {
             const o = document.getElementById('terminal-output');
             o.innerHTML += `<div style="color:${c}">> ${m}</div>`;
             o.scrollTop = o.scrollHeight;
         }
 
-        function logPizza(item) { logToTerm("HAZIRLANIYOR: " + item + "..."); }
+        function runLogic() {
+            const inp = document.getElementById('ai-input');
+            const val = inp.value.trim().toUpperCase();
+            inp.value = "";
+            if(!val) return;
 
-        function checkCode() {
-            const i = document.getElementById('code-input').value.trim().toUpperCase();
-            if(i === K_M) { hasFullAccess = true; logToTerm("FULL ERİŞİM AKTİF.", "gold"); }
-            else if(i === "SYSTEM_INFO") { logToTerm("CPU: %100 | ŞALGAM: %100 | VARİS: OK", "cyan"); }
-            else if(i === K_F) { openWin('win-invoice'); }
-            else if(i === "HAKKIMIZDA") { alert("Geliştirici: Alp Master | Lokasyon: Çorlu"); }
-            else if(i === "SPONSOR") { window.open("https://youtu.be/v-d1yI2kW_c?si=Emohwv5fp0Hd_6yw", "_blank"); }
-            else { logToTerm("KOMUT HATASI!", "red"); triggerGlitch(); }
+            logToTerm("USER: " + val, "#888");
+
+            setTimeout(() => {
+                // AI BRAIN LOGIC
+                if(val === "SYSTEM_INFO") { logToTerm("CPU: %100 | RAM: 59GB | AI: SYNCED | LOKASYON: ÇORLU", "var(--cyan)"); }
+                else if(val === "HAKKIMIZDA") { lastCmd = val; document.getElementById('file-spawn').classList.remove('hidden'); logToTerm("Geliştirici paketleri yüklendi."); }
+                else if(val === "SPONSOR") { window.open("https://youtu.be/v-d1yI2kW_c", "_blank"); }
+                else if(val === K_F) { openWin('win-invoice'); logToTerm("Kutsal fatura deşifre edildi.", "var(--gold)"); }
+                else if(val === K_M) { logToTerm("FULL MASTER YETKİSİ AKTİF!", "var(--gold)"); }
+                else if(val.includes("ANLA") || val.includes("TEST")) { logToTerm("ANALİZ: Seni Github'daki yerel LLM üzerinden %100 anlayabiliyorum Alp Master.", "var(--cyan)"); }
+                else if(val.includes("NABER")) { logToTerm("AI: Pusudayız Master, senden naber? Çorlu nasıl?", "var(--cyan)"); }
+                else if(val.includes("SJSJ")) { logToTerm("AI: SJSJSJSJSJSJSJSJ!", "var(--cyan)"); }
+                else { logToTerm(`KOMUT/SORU: [${val}] ANALİZ EDİLİYOR...`, "#444"); }
+            }, 600);
+        }
+
+        function openSecret(n) {
+            const horror = ["Arkadana bakma.", "Pusu kuruldu.", "Sistem soğuyor...", "1924..."];
+            if(n === 4) alert("Geliştirici: Alp Master | Şehir: Çorlu | Versiyon: V40.0");
+            else {
+                logToTerm(horror[Math.floor(Math.random()*horror.length)], "red");
+                document.getElementById('main-body').classList.add('glitch-effect');
+                setTimeout(() => document.getElementById('main-body').classList.remove('glitch-effect'), 400);
+            }
         }
 
         function sendMail() {
             const inp = document.getElementById('mail-input');
             const chat = document.getElementById('chat-box');
-            if(inp.value.trim() === "") return;
-            
+            if(!inp.value) return;
             chat.innerHTML += `<div class="msg-user">Sen: ${inp.value}</div>`;
+            const val = inp.value.toUpperCase();
             inp.value = "";
-            
             setTimeout(() => {
-                const ans = ghostAnswers[Math.floor(Math.random()*ghostAnswers.length)];
+                let ans = "Sessizlik en iyi pusudur...";
+                if(val.includes("ANLA")) ans = "Seni anladığım için buradayım Alp.";
+                if(val.includes("KOD")) ans = "Sabır.exe notlarını bekle...";
                 chat.innerHTML += `<div class="msg-ghost">???: ${ans}</div>`;
                 chat.scrollTop = chat.scrollHeight;
-                if(Math.random() < 0.3) triggerGlitch();
             }, 1000);
         }
 
         function startSabir() {
+            if(isSabirRunning) return;
             openWin('sabir-window');
+            isSabirRunning = true;
             let sec = 60;
-            const bar = document.getElementById('prog-bar');
-            const txt = document.getElementById('timer-txt');
-            sabirTimer = setInterval(() => {
+            let t = setInterval(() => {
                 sec--;
-                bar.style.width = ((60-sec)/60)*100 + "%";
-                txt.innerText = sec + "s";
+                document.getElementById('s-bar').style.width = ((60-sec)/60)*100 + "%";
+                document.getElementById('s-timer').innerText = sec + "s";
                 if(sec <= 0) {
-                    clearInterval(sabirTimer);
-                    document.getElementById('sabir-note').innerText = "SİSTEM KODU: " + K_1;
-                    logToTerm("SABIR TAMAMLANDI. NOTLAR GÜNCELLENDİ!", "gold");
+                    clearInterval(t);
+                    isSabirRunning = false;
+                    document.getElementById('sabir-data').innerText = "GITHUB_KEY: " + K_1;
+                    logToTerm("DEŞİFRE TAMAM: Veri notlara işlendi.", "var(--gold)");
                     closeWin('sabir-window');
                 }
             }, 1000);
         }
 
-        function triggerGlitch() {
-            const b = document.getElementById('main-body');
-            b.classList.add('glitch');
-            setTimeout(() => b.classList.remove('glitch'), 500);
-        }
-
-        function startDelivery() {
-            document.getElementById('p-btn').style.display = 'none';
-            let i = 0; const steps = ["FIRINDA...", "YOLDA...", "KAPIDA!"];
-            let t = setInterval(() => {
-                if(i < steps.length) {
-                    document.getElementById('p-status').innerText = steps[i];
-                    logToTerm("LOG: " + steps[i]);
-                    i++;
-                } else {
-                    clearInterval(t);
-                    if(Math.random() < 0.1) { alert("PİZZADAN KUPON ÇIKTI: " + K_M); }
-                    setTimeout(() => {
-                        closeWin('pizza-window');
-                        document.getElementById('p-btn').style.display = 'block';
-                        logToTerm("Teslimat bitti. Afiyet olsun Master.");
-                    }, 2500);
-                }
-            }, 1500);
-        }
+        function openWin(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeWin(id) { document.getElementById(id).classList.add('hidden'); }
     </script>
 </body>
 </html>
