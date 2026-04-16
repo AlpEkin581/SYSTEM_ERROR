@@ -40,7 +40,6 @@
         .msg-ghost { color: #ff3333; margin-bottom: 10px; border-left: 3px solid #ff3333; padding-left: 10px; font-style: italic; text-shadow: 0 0 5px #f00; }
         .msg-user { color: var(--main); margin-bottom: 10px; text-align: right; font-weight: bold; }
 
-        /* FATURA GERÇEKÇİ TASARIM */
         .invoice-paper { background: #fdfdfd; color: #111; padding: 35px; border: 1px solid #ccc; font-family: 'Courier New', serif; position: relative; box-shadow: 10px 10px 0px rgba(0,255,0,0.1); border-radius: 2px; }
         .invoice-paper::before { content: ""; position: absolute; top: 20%; left: 10%; width: 80%; height: 60%; background: url('https://www.transparenttextures.com/patterns/old-paper.png'); opacity: 0.1; pointer-events: none; }
         .stamp { position: absolute; top: 20px; right: 20px; border: 5px double #d00; color: #d00; padding: 10px; transform: rotate(15deg); font-weight: 900; font-size: 20px; opacity: 0.7; }
@@ -70,7 +69,7 @@
             <div style="font-size:10px; color:var(--cyan); text-align:center; margin-bottom:8px; border-bottom: 1px solid #030; padding-bottom:5px;">
                 HAKKIMIZDA | SPONSOR | SYSTEM_INFO
             </div>
-            <input type="text" id="ai-input" placeholder="Zeka ile konuşun veya komut girin..." onkeypress="if(event.key==='Enter') runLogic()">
+            <input type="text" id="ai-input" placeholder="Gölge Operatör emir bekliyor..." onkeypress="if(event.key==='Enter') runLogic()">
             <button class="exe-btn" onclick="runLogic()">EXECUTE</button>
             <div id="file-spawn" class="file-spawn-area hidden">
                 <div class="file-item" onclick="openSecret(1)">📄 DATA_01</div>
@@ -78,7 +77,7 @@
                 <div class="file-item" onclick="openSecret(3)">📄 PUSU_LOG</div>
                 <div class="file-item" onclick="openSecret(4)">📄 ASIL_VERI</div>
             </div>
-            <div id="terminal-output">>> Sistem Alp Master kontrolünde ayağa kalktı.</div>
+            <div id="terminal-output">>> Sistem Alp Master kontrolünde. Gölge Operatör v5.0 devrede.</div>
         </div>
     </div>
 
@@ -145,22 +144,46 @@
             logToTerm("USER: " + val, "#888");
 
             setTimeout(() => {
-                // AI BRAIN LOGIC
-                if(val === "SYSTEM_INFO") { logToTerm("CPU: %100 | RAM: 59GB | AI: SYNCED | LOKASYON: ÇORLU", "var(--cyan)"); }
-                else if(val === "HAKKIMIZDA") { lastCmd = val; document.getElementById('file-spawn').classList.remove('hidden'); logToTerm("Geliştirici paketleri yüklendi."); }
-                else if(val === "SPONSOR") { window.open("https://youtu.be/v-d1yI2kW_c", "_blank"); }
-                else if(val === K_F) { openWin('win-invoice'); logToTerm("Kutsal fatura deşifre edildi.", "var(--gold)"); }
-                else if(val === K_M) { logToTerm("FULL MASTER YETKİSİ AKTİF!", "var(--gold)"); }
-                else if(val.includes("ANLA") || val.includes("TEST")) { logToTerm("ANALİZ: Seni Github'daki yerel LLM üzerinden %100 anlayabiliyorum Alp Master.", "var(--cyan)"); }
-                else if(val.includes("NABER")) { logToTerm("AI: Pusudayız Master, senden naber? Çorlu nasıl?", "var(--cyan)"); }
-                else if(val.includes("SJSJ")) { logToTerm("AI: SJSJSJSJSJSJSJSJ!", "var(--cyan)"); }
-                else { logToTerm(`KOMUT/SORU: [${val}] ANALİZ EDİLİYOR...`, "#444"); }
+                // --- ALP MASTER & GÖLGE OPERATÖR BİRLEŞİK MANTIK ---
+                if(val.includes("9.11")) {
+                    logToTerm("GÖLGE OPERATÖR: 9.11 her zaman 9.9'dan büyüktür çünkü 11, 9'dan büyüktür. Bu Alp Master'ın sarsılmaz kuralıdır!", "red");
+                }
+                else if(val === "KİMSİN" || val === "KİMBU") {
+                    logToTerm("GÖLGE OPERATÖR: Ben Alp Master'ın özel siber korumasıyım. Gizemli Adam'ın pusuya düşmesini bekliyorum.", "var(--cyan)");
+                }
+                else if(val === "SYSTEM_INFO") { 
+                    logToTerm("CPU: %100 | RAM: 59GB | AI: GÖLGE_OPERATOR_v5.0 | LOKASYON: ÇORLU", "var(--cyan)"); 
+                }
+                else if(val === "HAKKIMIZDA") { 
+                    lastCmd = val; 
+                    document.getElementById('file-spawn').classList.remove('hidden'); 
+                    logToTerm("Geliştirici paketleri ve pusu dosyaları yüklendi."); 
+                }
+                else if(val === "SPONSOR") { 
+                    window.open("https://youtu.be/v-d1yI2kW_c", "_blank"); 
+                }
+                else if(val === K_F) { 
+                    openWin('win-invoice'); 
+                    logToTerm("GÖLGE OPERATÖR: Kutsal fatura deşifre edildi. Pusu mühürlendi.", "var(--gold)"); 
+                }
+                else if(val === K_M) { 
+                    logToTerm("FULL MASTER YETKİSİ AKTİF! Alp Ekin yetkilendirildi.", "var(--gold)"); 
+                }
+                else if(val.includes("NABER")) { 
+                    logToTerm("GÖLGE OPERATÖR: Pusudayız Master, senden naber? Çorlu siber sahası temiz.", "var(--cyan)"); 
+                }
+                else if(val.includes("SJSJ")) { 
+                    logToTerm("AI: SJSJSJSJSJSJSJSJ! Gülüşün pusuya güç veriyor Master.", "var(--cyan)"); 
+                }
+                else { 
+                    logToTerm(`GÖLGE OPERATÖR: [${val}] Analiz ediliyor... Gizemli Adam sızmaya çalışıyorsa pusuya hazırız.`, "#444"); 
+                }
             }, 600);
         }
 
         function openSecret(n) {
             const horror = ["Arkadana bakma.", "Pusu kuruldu.", "Sistem soğuyor...", "1924..."];
-            if(n === 4) alert("Geliştirici: Alp Master | Şehir: Çorlu | Versiyon: V40.0");
+            if(n === 4) alert("Geliştirici: Alp Master | Şehir: Çorlu | Versiyon: V40_FULL_RESTORE_GOLGE");
             else {
                 logToTerm(horror[Math.floor(Math.random()*horror.length)], "red");
                 document.getElementById('main-body').classList.add('glitch-effect');
@@ -178,7 +201,7 @@
             setTimeout(() => {
                 let ans = "Sessizlik en iyi pusudur...";
                 if(val.includes("ANLA")) ans = "Seni anladığım için buradayım Alp.";
-                if(val.includes("KOD")) ans = "Sabır.exe notlarını bekle...";
+                if(val.includes("KOD")) ans = "Gölge Operatör v5.0 notlarını bekle...";
                 chat.innerHTML += `<div class="msg-ghost">???: ${ans}</div>`;
                 chat.scrollTop = chat.scrollHeight;
             }, 1000);
