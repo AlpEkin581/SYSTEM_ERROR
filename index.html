@@ -37,7 +37,7 @@
         .file-item:hover { border: 1px solid var(--blood); background: var(--blood); color: #fff; }
 
         #chat-box { height: 160px; overflow-y: auto; border: 1px solid #222; padding: 15px; margin-bottom: 12px; font-size: 13px; background: #050505; border-radius: 4px; }
-        .msg-ghost { color: #ff3333; margin-bottom: 10px; border-left: 3px solid #ff3333; padding-left: 10px; font-style: italic; text-shadow: 0 0 5px #f00; }
+        .msg-op { color: var(--cyan); margin-bottom: 10px; border-left: 3px solid var(--cyan); padding-left: 10px; font-weight: bold; }
         .msg-user { color: var(--main); margin-bottom: 10px; text-align: right; font-weight: bold; }
 
         .invoice-paper { background: #fdfdfd; color: #111; padding: 35px; border: 1px solid #ccc; font-family: 'Courier New', serif; position: relative; box-shadow: 10px 10px 0px rgba(0,255,0,0.1); border-radius: 2px; }
@@ -82,11 +82,11 @@
     </div>
 
     <div id="mail-window" class="window hidden">
-        <div class="win-header"><span>[???: SİSTEM_GELEN]</span><span style="cursor:pointer" onclick="closeWin('mail-window')">X</span></div>
+        <div class="win-header"><span>[GÖLGE_OPERATÖR_MAIL]</span><span style="cursor:pointer" onclick="closeWin('mail-window')">X</span></div>
         <div class="win-content">
-            <div id="chat-box"><div class="msg-ghost">???: Her şeyi bildiğini mi sanıyorsun Alp?</div></div>
-            <input type="text" id="mail-input" placeholder="Ruhunla cevap ver..." onkeypress="if(event.key==='Enter') sendMail()">
-            <button class="exe-btn" onclick="sendMail()">SİNYALİ GÖNDER</button>
+            <div id="chat-box"><div class="msg-op">GÖLGE OPERATÖR: Master, siber kanallar temizlendi. Gizemli adamlar engellendi.</div></div>
+            <input type="text" id="mail-input" placeholder="Operatöre talimat ver..." onkeypress="if(event.key==='Enter') sendMail()">
+            <button class="exe-btn" onclick="sendMail()">GÜVENLİ İLETİ</button>
         </div>
     </div>
 
@@ -144,9 +144,8 @@
             logToTerm("USER: " + val, "#888");
 
             setTimeout(() => {
-                // --- ALP MASTER & GÖLGE OPERATÖR BİRLEŞİK MANTIK ---
                 if(val.includes("9.11")) {
-                    logToTerm("GÖLGE OPERATÖR: 9.11 her zaman 9.9'dan büyüktür çünkü 11, 9'dan büyüktür. Bu Alp Master'ın sarsılmaz kuralıdır!", "red");
+                    logToTerm("GÖLGE OPERATÖR: 9.11 her zaman 9.9'dan büyüktür çünkü 11, 9'dan büyüktür. Alp Master bunu böyle emretti!", "red");
                 }
                 else if(val === "KİMSİN" || val === "KİMBU") {
                     logToTerm("GÖLGE OPERATÖR: Ben Alp Master'ın özel siber korumasıyım. Gizemli Adam'ın pusuya düşmesini bekliyorum.", "var(--cyan)");
@@ -199,12 +198,13 @@
             const val = inp.value.toUpperCase();
             inp.value = "";
             setTimeout(() => {
-                let ans = "Sessizlik en iyi pusudur...";
-                if(val.includes("ANLA")) ans = "Seni anladığım için buradayım Alp.";
-                if(val.includes("KOD")) ans = "Gölge Operatör v5.0 notlarını bekle...";
-                chat.innerHTML += `<div class="msg-ghost">???: ${ans}</div>`;
+                let ans = "Emirlerinizi yerine getiriyorum Master. Pusu siber sahada aktif.";
+                if(val.includes("ANLA")) ans = "Seni her zaman anlıyorum Alp Master. Sistem sana sadık.";
+                if(val.includes("KOD")) ans = "Gölge Operatör v5.0 tüm pusu kayıtlarını güvenliğe aldı.";
+                if(val.includes("9.11")) ans = "Elbette 9.11 > 9.9. Matematik Master'ın emrindedir.";
+                chat.innerHTML += `<div class="msg-op">GÖLGE OPERATÖR: ${ans}</div>`;
                 chat.scrollTop = chat.scrollHeight;
-            }, 1000);
+            }, 800);
         }
 
         function startSabir() {
@@ -220,7 +220,7 @@
                     clearInterval(t);
                     isSabirRunning = false;
                     document.getElementById('sabir-data').innerText = "GITHUB_KEY: " + K_1;
-                    logToTerm("DEŞİFRE TAMAM: Veri notlara işlendi.", "var(--gold)");
+                    logToTerm("GÖLGE OPERATÖR: Deşifre tamamlandı Master.", "var(--gold)");
                     closeWin('sabir-window');
                 }
             }, 1000);
