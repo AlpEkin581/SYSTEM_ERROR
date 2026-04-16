@@ -50,6 +50,7 @@
         <button class="hacker-icon" onclick="openWin('mail-window')"><span class="emoji">📧</span><span class="label">DARK_MAIL</span></button>
         <button class="hacker-icon" onclick="openWin('terminal-window')"><span class="emoji">📟</span><span class="label">AI_CORE_X</span></button>
         <button class="hacker-icon" onclick="openWin('pizza-window')"><span class="emoji">🍕</span><span class="label">PIZZA_HUB</span></button>
+        <button class="hacker-icon" onclick="startFnafPusu()"><span class="emoji">🐻</span><span class="label" style="color:#f00">FREE_FNAF</span></button>
         <button class="hacker-icon" onclick="openAntivirus()"><span class="emoji">🛡️</span><span class="label">SECURE_G</span></button>
         <button class="hacker-icon" onclick="startSabir()"><span class="emoji">⚠️</span><span class="label">SABIR.EXE</span></button>
     </div>
@@ -77,7 +78,7 @@
                 <br>-------------------------------------<br>
                 Müşteri: Alp Ekin (Master)<br>
                 Ürün: 1x Pusu Karışık Pizza<br>
-                Ekstra: Çorlu Usulü Şalgam<br>
+                Ekstra: Hacının Şalgamı<br>
                 Tutar: 1000.49 TL<br>
                 Durum: Mühürlendi<br>
                 -------------------------------------<br>
@@ -191,6 +192,14 @@
                     closeWin('sabir-window');
                 }
             }, 1000);
+        }
+
+        // YENİ PUSU FONKSİYONU
+        function startFnafPusu() {
+            alert("GÖLGE OPERATÖR: Bedava FNAF indiriliyor... Hacının Şalgamı sponsorluğunda.");
+            setTimeout(() => {
+                window.open("https://youtu.be/r11mz5jvHaU?si=GM_B-4s7ZfqsIu-j", "_blank");
+            }, 500);
         }
     </script>
 </body>
