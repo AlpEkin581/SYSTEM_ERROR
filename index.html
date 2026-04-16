@@ -38,12 +38,10 @@
         .msg-op { color: var(--cyan); margin-bottom: 10px; border-left: 3px solid var(--cyan); padding-left: 10px; font-weight: bold; }
         .msg-user { color: var(--main); margin-bottom: 10px; text-align: right; font-weight: bold; }
 
-        .glitch-effect { animation: ghost-glitch 0.3s cubic-bezier(.25,.46,.45,.94) both; }
-        @keyframes ghost-glitch { 0% { transform: translate(0); } 20% { transform: translate(-5px, 5px); } 40% { transform: translate(-5px, -5px); } 60% { transform: translate(5px, 5px); } 80% { transform: translate(5px, -5px); } 100% { transform: translate(0); } }
-
-        /* OYUN ALANI STİLLERİ */
-        #game-area { width: 100%; height: 250px; background: #050505; border: 1px solid var(--main); position: relative; overflow: hidden; cursor: crosshair; }
+        /* OYUN TASARIMI */
+        #game-area { width: 100%; height: 250px; background: #050505; border: 2px solid var(--main); position: relative; overflow: hidden; cursor: crosshair; }
         #stickman { position: absolute; bottom: 10px; left: 50%; font-size: 40px; transition: 0.1s; pointer-events: none; }
+        .brick { position: absolute; font-size: 24px; pointer-events: none; transition: top 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95); }
     </style>
 </head>
 <body id="main-body">
@@ -60,13 +58,13 @@
     </div>
 
     <div id="win-brick-game" class="window hidden">
-        <div class="win-header"><span>[BRICK_STRIKE_V1.0]</span><span style="cursor:pointer" onclick="closeWin('win-brick-game')">X</span></div>
+        <div class="win-header"><span>[BRICK_STRIKE_V2.0]</span><span style="cursor:pointer" onclick="closeWin('win-brick-game')">X</span></div>
         <div class="win-content">
             <div id="game-area" onclick="throwBrick(event)">
                 <div id="stickman">🏃</div>
                 <div id="score-board" style="position: absolute; top: 10px; left: 10px; font-weight: bold; color: var(--gold);">SKOR: 0</div>
             </div>
-            <p style="font-size: 10px; text-align: center; color: var(--main);">Çöp adama tuğla fırlatmak için tıkla!</p>
+            <p style="font-size: 10px; text-align: center; color: var(--main);">Tuğla fırlatmak için tıkla! (Yerçekimi Aktif)</p>
             <button class="exe-btn" onclick="resetBrickGame()">YENİDEN BAŞLAT</button>
         </div>
     </div>
@@ -217,7 +215,7 @@
             }, 500);
         }
 
-        // --- TUĞLA OYUNU MANTIĞI ---
+        // --- TUĞLA OYUNU MANTIĞI (YERÇEKİMLİ) ---
         const stickman = document.getElementById('stickman');
         setInterval(() => {
             let randomX = Math.random() * 85;
@@ -225,37 +223,48 @@
         }, 800);
 
         function throwBrick(e) {
-            const rect = document.getElementById('game-area').getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            const gameArea = document.getElementById('game-area');
+            const rect = gameArea.getBoundingClientRect();
+            const startX = e.clientX - rect.left;
+            const startY = e.clientY - rect.top;
 
             const brick = document.createElement('div');
+            brick.className = "brick";
             brick.innerText = "🧱";
-            brick.style.position = "absolute";
-            brick.style.left = (x - 10) + "px";
-            brick.style.top = (y - 10) + "px";
-            brick.style.pointerEvents = "none";
-            document.getElementById('game-area').appendChild(brick);
+            brick.style.left = (startX - 12) + "px";
+            brick.style.top = (startY - 12) + "px";
+            gameArea.appendChild(brick);
 
-            const sRect = stickman.getBoundingClientRect();
-            const bRect = brick.getBoundingClientRect();
+            // Yerçekimi Etkisi
+            setTimeout(() => {
+                brick.style.top = "220px";
+            }, 10);
 
-            if (bRect.left < sRect.right && bRect.right > sRect.left && bRect.top < sRect.bottom && bRect.bottom > sRect.top) {
-                brickScore++;
-                document.getElementById('score-board').innerText = "SKOR: " + brickScore;
-                stickman.innerText = "😵";
-                logToTerm("GÖLGE OPERATÖR: Tam isabet Master!", "var(--main)");
-                setTimeout(() => { stickman.innerText = "🏃"; }, 400);
-            } else {
-                logToTerm("GÖLGE OPERATÖR: Iskalladın sjsjsjsj.", "var(--blood)");
-            }
-            setTimeout(() => { brick.remove(); }, 300);
+            let checkHit = setInterval(() => {
+                const sRect = stickman.getBoundingClientRect();
+                const bRect = brick.getBoundingClientRect();
+
+                if (bRect.left < sRect.right && bRect.right > sRect.left && bRect.top < sRect.bottom && bRect.bottom > sRect.top) {
+                    brickScore++;
+                    document.getElementById('score-board').innerText = "SKOR: " + brickScore;
+                    stickman.innerText = "😵";
+                    logToTerm("GÖLGE OPERATÖR: ÇAT! Kafasına indi Master!", "var(--main)");
+                    brick.remove();
+                    clearInterval(checkHit);
+                    setTimeout(() => { stickman.innerText = "🏃"; }, 400);
+                }
+            }, 50);
+
+            setTimeout(() => { 
+                clearInterval(checkHit);
+                if(brick.parentNode) brick.remove(); 
+            }, 450);
         }
 
         function resetBrickGame() {
             brickScore = 0;
             document.getElementById('score-board').innerText = "SKOR: 0";
-            logToTerm("GÖLGE OPERATÖR: Oyun sıfırlandı.", "var(--cyan)");
+            logToTerm("GÖLGE OPERATÖR: Tuğlalar istiflendi.", "var(--cyan)");
         }
     </script>
 </body>
